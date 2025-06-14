@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const donorSchema = new mongoose.Schema({
     _id: {type: String, required:true},
