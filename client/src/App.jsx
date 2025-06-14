@@ -36,12 +36,12 @@ const App = () => {
 
   const isAdminPath = useLocation().pathname.includes("admin")
   const isPatientPath = useLocation().pathname.includes("patient")
-  const {showUserLogin, isPatient, isAdmin} = useAppContext()
+  const {showPatientLogin, isPatient, isAdmin} = useAppContext()
 
   return (
     <div className='text-default min-h-screen text-gray-700 bg-white'>
       {(isPatientPath || isAdminPath) ? null : <Navbar />} 
-      {showUserLogin ? <Login/> : null}
+      {showPatientLogin ? <Login/> : null}
 
 
       <Toaster/>

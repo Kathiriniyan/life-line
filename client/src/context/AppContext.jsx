@@ -15,6 +15,7 @@ export const AppContextProvider = ({children})=>{
 
     const navigate = useNavigate();
     const [user, setUser] = useState(null)
+    const [patient, setPatient] = useState(null);
     const [isPatient, setIsPatient] = useState(false)
     const [isAdmin, setIsAdmin] = useState(false)
     const [showUserLogin, setShowUserLogin] = useState(false)
@@ -25,19 +26,22 @@ export const AppContextProvider = ({children})=>{
     const [favouriteCampaigns, setFavouriteCampaigns] = useState({})
 
 
-    // Fetch Admin Status
-    const fetchPatient = async ()=>{
-        try {
-            const {data} = await axios.get('/api/patient/is-auth');
-            if(data.success){
-                setIsPatient(true)
-            }else{
-                setIsPatient(false)
-            }
-        } catch (error) {
-            setIsPatient(false)
+    const fetchPatientAuth = async () => {
+    try {
+        const { data } = await axios.get('/api/patient/is-auth');
+        if (data.success) {
+            setIsPatient(true);
+            setPatient(data.patient);
+        } else {
+            setIsPatient(false);
+            setPatient(null);
         }
+    } catch {
+        setIsPatient(false);
+        setPatient(null);
     }
+};
+
 
     const fetchAdmin = async ()=>{
         try {
@@ -105,13 +109,14 @@ export const AppContextProvider = ({children})=>{
         //fetchUser()
         //fetchAdmin()
         //fetchCampaigns()
+        fetchPatientAuth();
         fetchCampaign()
     },[])
 
 
    
 
-    const value = {navigate, user, setUser, setIsPatient, isPatient, showUserLogin, setShowUserLogin, campaigns, currency, cartItems, searchQuery, setSearchQuery,axios,fetchCampaign, setCartItems,isAdmin, setIsAdmin, showPatientLogin, setShowPatientLogin}
+    const value = {navigate, user, setUser, setIsPatient, isPatient, showUserLogin, setShowUserLogin, campaigns, currency, cartItems, searchQuery, setSearchQuery,axios,fetchCampaign, setCartItems,isAdmin, setIsAdmin, showPatientLogin, setShowPatientLogin,patient,setPatient,}
 
     return <AppContext.Provider value={value}>
         {children}

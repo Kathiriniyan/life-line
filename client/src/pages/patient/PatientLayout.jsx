@@ -7,7 +7,7 @@ import toast from 'react-hot-toast';
 
 const PatientLayout = () => {
 
-    const { axios, navigate } = useAppContext();
+    const { axios, navigate, setIsPatient, setPatient } = useAppContext();
 
    const user = {
     firstName: 'Patient',
@@ -23,19 +23,27 @@ const PatientLayout = () => {
         { name: "Messages", path: "/patient/messages", icon: assets.order_icon },
     ];
 
-    // const logout = async ()=>{
-    //     try {
-    //         const { data } = await axios.get('/api/admin/logout');
-    //         if(data.success){
-    //             toast.success(data.message)
-    //             navigate('/')
-    //         }else{
-    //             toast.error(data.message)
-    //         }
-    //     } catch (error) {
-    //         toast.error(error.message)
-    //     }
-    // }
+
+const logout = async ()=>{
+    try {
+        const { data } = await axios.get('/api/patient/logout');
+        // Always clear patient state, regardless of server response!
+        setIsPatient(false);
+        setPatient(null);
+        if(data.success){
+            toast.success(data.message)
+            navigate('/')
+        } else {
+            toast.error(data.message)
+        }
+    } catch (error) {
+        setIsPatient(false);  // <<-- Make sure local state is cleared on error, too!
+        setPatient(null);
+        toast.success("Logged out");
+        navigate('/');
+    }
+}
+
 
     return (
         <>
@@ -43,6 +51,9 @@ const PatientLayout = () => {
                 <Link to={'/'}>
                     <img src={assets.logo} alt="logo" className='coursor-pointer w-34 md:w-38' />
                 </Link>
+                <div className="flex items-center gap-5 text-gray-500">
+                    <button onClick={logout} className='border rounded-full text-sm px-4 py-1'>Logout</button>
+                </div>
             </div>
             <div className='flex '>
                 

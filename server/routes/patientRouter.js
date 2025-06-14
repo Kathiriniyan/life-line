@@ -7,7 +7,7 @@ const patientRouter = express.Router();
 
 patientRouter.post('/register', register)
 patientRouter.post('/login', login)
-patientRouter.get('/is-auth', authPatient, isAuth)
-patientRouter.get('/logout', authPatient, logout)
+patientRouter.get('/is-auth', isAuth)
+patientRouter.get('/logout', logout)
 
 export default patientRouter;

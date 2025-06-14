@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { useAppContext } from '../../context/AppContext'
 import toast from 'react-hot-toast'
+import { useAppContext } from '../../context/AppContext';
 
 const PatientLogin = () => {
     // NOTE: Add setPatient to your AppContext if you want to store patient info.
-    const { isPatient, setShowPatientLogin, setPatient, axios, navigate } = useAppContext();
+    const { isPatient, setShowPatientLogin, setPatient, axios, navigate, setIsPatient } = useAppContext();
     const [mode, setMode] = useState("login"); // "login" or "register"
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -24,10 +24,13 @@ const PatientLogin = () => {
 
             if (data.success) {
                 toast.success(data.message || (mode === "register" ? "Registered!" : "Logged in!"));
-                if (setPatient) setPatient(data.patient); // safe check
+                if (setPatient) setPatient(data.patient);
+                if (setIsPatient) setIsPatient(true);
                 setShowPatientLogin(false);
                 navigate('/patient');
-            } else {
+            }
+
+            else {
                 toast.error(data.message || "Error");
             }
         } catch (error) {
@@ -39,7 +42,7 @@ const PatientLogin = () => {
     useEffect(() => {
         if (isPatient) {
             setShowPatientLogin(false);
-            navigate("/patient");
+            navigate("patient");
         }
     }, [isPatient]);
 
