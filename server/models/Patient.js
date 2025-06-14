@@ -8,4 +8,4 @@ const patientSchema = new mongoose.Schema({
 
 const Patient = mongoose.models.patient || mongoose.model('patient', patientSchema)
 
-export default Patient
+export default Patient;

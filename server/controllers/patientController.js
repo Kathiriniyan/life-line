@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import Patient from '../models/Patient.js';
 
 
 //Register Patient : /api/patient/register
