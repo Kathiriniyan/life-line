@@ -1,10 +1,11 @@
 import express from 'express';
 import { updateCart } from "../controllers/cartController.js";
-import authUser from "../middlewares/authUser.js";
+import authPatient from '../middlewares/authPatient.js';
+
 
 
 const cartRouter = express.Router();
 
-cartRouter.post('/update', authUser, updateCart)
+cartRouter.post('/update', authPatient, updateCart)
 
 export default cartRouter;

@@ -1,9 +1,8 @@
 import mongoose from "mongoose";
 
-const accountSchema = new mongoose.Schema({
+const donationSchema = new mongoose.Schema({
     _id: {type: String, required: true},
     donorId : {type: String, required: true, ref: 'donor'},
-    patientId : {type: String, required: true, ref: 'patient'},
     items: [{
         campaign: {type: String, required: true, ref: 'campaign'},
         amount: {type: Number, required: true}
@@ -12,6 +11,6 @@ const accountSchema = new mongoose.Schema({
     isAnonymous: { type: Boolean, default: false },
 }, { timestamps: true })
 
-const Account = mongoose.models.account || mongoose.model('account', accountSchema)
+const Donation = mongoose.models.donation || mongoose.model('donation', donationSchema)
 
-export default Account;
+export default Donation;

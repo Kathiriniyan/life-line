@@ -8,6 +8,8 @@ import { clerkMiddleware } from '@clerk/express'
 import { serve } from "inngest/express";
 import { inngest, functions } from "./inngest/index.js"
 
+
+
 const app = express();
 const port = process.env.PORT || 4000;
 
@@ -25,6 +27,7 @@ app.use(clerkMiddleware())
 
 app.get('/',(req, res) => res.send("API is Working"));
 app.use('/api/inngest', serve({ client: inngest, functions }))
+
 
 
 

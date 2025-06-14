@@ -111,7 +111,7 @@ export const AppContextProvider = ({children})=>{
 
    
 
-    const value = {navigate, user, setUser, setIsPatient, isPatient, showUserLogin, setShowUserLogin, campaigns, currency, cartItems, searchQuery, setSearchQuery,axios,fetchCampaign, setCartItems,isAdmin, setIsAdmin}
+    const value = {navigate, user, setUser, setIsPatient, isPatient, showUserLogin, setShowUserLogin, campaigns, currency, cartItems, searchQuery, setSearchQuery,axios,fetchCampaign, setCartItems,isAdmin, setIsAdmin, showPatientLogin, setShowPatientLogin}
 
     return <AppContext.Provider value={value}>
         {children}
