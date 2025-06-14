@@ -21,14 +21,9 @@ const Add_Address = () => {
     const {axios, user, navigate} = useAppContext();
 
     const [address, setAddresses] = useState({
-        firstName: '',
-        lastName: '',
-        email: '',
         street: '',
         city: '',
-        state : '',
-        zipcode: '',
-        country: '',
+        province : '',
         phone: '',
     })
 
@@ -74,13 +69,9 @@ const Add_Address = () => {
                     
                     <div className='grid grid-cols-2 gap-4'>
                         <InputField handelchange={handelchange} address={address} name='city' type="text" placeholder="City" />
-                        <InputField handelchange={handelchange} address={address} name='state' type="text" placeholder="State" />
+                        <InputField handelchange={handelchange} address={address} name='province' type="text" placeholder="Province" />
                     </div>
 
-                    <div className='grid grid-cols-2 gap-4'>
-                        <InputField handelchange={handelchange} address={address} name='zipcode' type="number" placeholder="Zip code" />
-                        <InputField handelchange={handelchange} address={address} name='country' type="text" placeholder="Country" />
-                    </div>
 
                     <InputField handelchange={handelchange} address={address} name='phone' type="text" placeholder="Phone" />
 

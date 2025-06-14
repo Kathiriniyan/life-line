@@ -21,15 +21,10 @@ const AddBankAccount = () => {
     const {axios, user, navigate} = useAppContext();
 
     const [bank, setBank] = useState({
-        firstName: '',
-        lastName: '',
-        email: '',
-        street: '',
-        city: '',
-        state : '',
-        zipcode: '',
-        country: '',
-        phone: '',
+        fullName: '',
+        bankName: '',
+        accNumber: '',
+        branch: '',
     })
 
     const handelchange = (e)=>{
@@ -72,13 +67,11 @@ const AddBankAccount = () => {
 
                     <InputField handelchange={handelchange} bank={bank} name='fullName' type="text" placeholder="Full Name" />
                     
-                    <InputField handelchange={handelchange} bank={bank} name='bank' type="text" placeholder="Bank" />
+                    <InputField handelchange={handelchange} bank={bank} name='bankName' type="text" placeholder="Bank Name" />
 
                     <InputField handelchange={handelchange} bank={bank} name='accNumber' type="text" placeholder="Account Number" />
 
                     <InputField handelchange={handelchange} bank={bank} name='branch' type="text" placeholder="Branh" />
-
-                    <InputField handelchange={handelchange} bank={bank} name='phone' type="text" placeholder="Phone" />
 
                     <button className='w-full mt-6 bg-primary text-white py-3 hover:bg-primary-dull transition cursor-pointer uppercase rounded'>
                         Save Account Details

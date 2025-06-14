@@ -49,12 +49,24 @@ export const campaignById = async (req, res)=>{
     }
 }
 
-// change product stock : /api/campaign/stock
+// change campain Approve : /api/campaign/approve
 export const changeStock = async (req, res)=>{
     try {
         const { id, inStock } = req.body
         await Campaign.findByIdAndUpdate(id, {inStock})
         res.json({success: true, message: "Stock Updated"})
+    } catch (error) {
+        console.log(error.message);
+        res.json({success: false, message: error.message })
+    }
+}
+
+// change campain Approve : /api/campaign/approve
+export const changeApprove = async (req, res)=>{
+    try {
+        const { id, isApprove } = req.body
+        await Campaign.findByIdAndUpdate(id, {isApprove})
+        res.json({success: true, message: "Campaign Verified"})
     } catch (error) {
         console.log(error.message);
         res.json({success: false, message: error.message })

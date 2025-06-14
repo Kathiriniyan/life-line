@@ -32,8 +32,8 @@ const AddCampaign = () => {
                 title,
                 description: description.split('\n'),
                 category,
-                price,
-                offerPrice
+                goalAmount,
+                endDate
             }
 
             const formData = new FormData();
@@ -49,8 +49,8 @@ const AddCampaign = () => {
                 setTitle('')
                 setDescription('')
                 setCategory('')
-                setPrice('')
-                setOfferPrice('')
+                setGoalAmount('')
+                setEndDate('')
                 setFiles([])
             } else {
                 toast.error(data.message);
@@ -84,14 +84,14 @@ const AddCampaign = () => {
                     </div>
                 </div>
                 <div className="flex flex-col gap-1 max-w-md">
-                    <label className="text-base font-medium" htmlFor="product-name">Campaign Title</label>
+                    <label className="text-base font-medium" htmlFor="campaign-title">Campaign Title</label>
                     <input onChange={(e) => setTitle(e.target.value)} value={title}
-                        id="product-name" type="text" placeholder="Type here" className="outline-none md:py-2.5 py-2 px-3 rounded border border-gray-500/40" required />
+                        id="campaign-title" type="text" placeholder="Type here" className="outline-none md:py-2.5 py-2 px-3 rounded border border-gray-500/40" required />
                 </div>
                 <div className="flex flex-col gap-1 max-w-md">
-                    <label className="text-base font-medium" htmlFor="product-description">Campaign Description</label>
+                    <label className="text-base font-medium" htmlFor="campaign-description">Campaign Description</label>
                     <textarea onChange={(e) => setDescription(e.target.value)} value={description}
-                        id="product-description" rows={4} className="outline-none md:py-2.5 py-2 px-3 rounded border border-gray-500/40 resize-none" placeholder="Type here"></textarea>
+                        id="campaign-description" rows={4} className="outline-none md:py-2.5 py-2 px-3 rounded border border-gray-500/40 resize-none" placeholder="Type here"></textarea>
                 </div>
                 <div className="w-full flex flex-col gap-1">
                     <label className="text-base font-medium" htmlFor="category">Category</label>
@@ -105,14 +105,14 @@ const AddCampaign = () => {
                 </div>
                 <div className="flex items-center gap-5 flex-wrap">
                     <div className="flex-1 flex flex-col gap-1 w-32">
-                        <label className="text-base font-medium" htmlFor="product-price">Product Price</label>
+                        <label className="text-base font-medium" htmlFor="goal-amount">Goal Amount</label>
                         <input onChange={(e) => setGoalAmount(e.target.value)} value={goalAmount}
-                            id="product-price" type="number" placeholder="0" className="outline-none md:py-2.5 py-2 px-3 rounded border border-gray-500/40" required />
+                            id="goal-amount" type="number" placeholder="0" className="outline-none md:py-2.5 py-2 px-3 rounded border border-gray-500/40" required />
                     </div>
                     <div className="flex-1 flex flex-col gap-1 w-32">
-                        <label className="text-base font-medium" htmlFor="offer-price">Offer Price</label>
+                        <label className="text-base font-medium" htmlFor="end-date">End Date</label>
                         <input onChange={(e) => setEndDate(e.target.value)} value={endDate}
-                            id="offer-price" type="number" placeholder="0" className="outline-none md:py-2.5 py-2 px-3 rounded border border-gray-500/40" required />
+                            id="end-date" type="date" placeholder="0" className="outline-none md:py-2.5 py-2 px-3 rounded border border-gray-500/40" required />
                     </div>
                 </div>
 
@@ -124,7 +124,7 @@ const AddCampaign = () => {
                             <div className="flex justify-between items-start">
                                 <p className="text-gray-500">
                                     {selectedAddress
-                                        ? `${selectedAddress.street},${selectedAddress.city},${selectedAddress.state},${selectedAddress.country}`
+                                        ? `${selectedAddress.street},${selectedAddress.city},${selectedAddress.province}`
                                         : "No address found"}
                                 </p>
                                 <button
@@ -146,7 +146,7 @@ const AddCampaign = () => {
                                             }}
                                             className="text-gray-500 p-2 hover:bg-gray-100 cursor-pointer"
                                         >
-                                            {address.street},{address.city},{address.state},{address.country}
+                                            {address.street},{address.city},{address.province}
                                         </p>
                                     ))}
                                     <p
