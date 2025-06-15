@@ -2,7 +2,42 @@ import React, { useState, useEffect } from 'react';
 import { useAppContext } from '../context/AppContext';
 
 const SHARE_OPTIONS = [
-  // ... (your share options remain unchanged)
+  {
+    name: 'Facebook',
+    icon: (
+      <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
+        <rect width="24" height="24" rx="4" fill="#1877F3" />
+        <path d="M16.67 12H14V10.6c0-.45.18-.68.74-.68H16v-2.5h-2.03C12 7.42 11 8.22 11 9.71v2.29H9.5V14H11v6h3v-6h2.1l.3-2z" fill="#fff" />
+      </svg>
+    ),
+    url: link => `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(link)}`,
+    color: '#1877F3'
+  },
+  {
+    name: 'WhatsApp',
+    icon: (
+      <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
+        <rect width="24" height="24" rx="4" fill="#25D366" />
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.031-.967-.273-.099-.472-.148-.672.149-.197.297-.769.967-.942 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.457.13-.606.134-.133.298-.347.446-.52.148-.173.198-.298.298-.497.099-.198.05-.372-.025-.521-.074-.149-.672-1.623-.921-2.221-.242-.58-.487-.502-.672-.511l-.572-.01c-.198 0-.521.074-.793.372s-1.04 1.016-1.04 2.479c0 1.463 1.066 2.879 1.215 3.078.149.198 2.099 3.201 5.077 4.365.709.244 1.261.39 1.694.5.712.178 1.36.153 1.872.093.571-.067 1.758-.72 2.007-1.416.248-.697.248-1.293.173-1.417-.074-.124-.272-.198-.57-.347z" fill="#fff" />
+      </svg>
+    ),
+    url: link => `https://wa.me/?text=${encodeURIComponent(link)}`,
+    color: '#25D366'
+  },
+  {
+    name: 'Copy Link',
+    icon: (
+      <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
+        <rect width="24" height="24" rx="4" fill="#6b7280" />
+        <path d="M9 10h-3a2 2 0 00-2 2v5a2 2 0 002 2h5a2 2 0 002-2v-3M15 14h3a2 2 0 002-2v-5a2 2 0 00-2-2h-5a2 2 0 00-2 2v3" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    ),
+    action: link => {
+      navigator.clipboard.writeText(link || window.location.href);
+      alert('Link copied!');
+    },
+    color: '#6b7280'
+  }
 ];
 
 function getDaysLeft(endDate) {
@@ -132,9 +167,17 @@ const CampaignCards = ({ campaign }) => {
           <span className="font-bold text-sm text-gray-800">LKR {campaign.goalAmount?.toLocaleString()}</span>
         </div>
         <div className="mb-2 flex gap-1 items-center">
-          <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M12 21s-6-5.686-6-10A6 6 0 1 1 18 11c0 4.314-6 10-6 10zm0-8a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" fill="#64748b" /></svg>
-          <span className="font-bold text-sm text-gray-800">{campaign.address}</span>
+          <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+            <path d="M12 21s-6-5.686-6-10A6 6 0 1 1 18 11c0 4.314-6 10-6 10zm0-8a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" fill="#64748b" />
+          </svg>
+          <span className="font-bold text-sm text-gray-800">
+            {/* Print city if address is an object */}
+            {campaign.address && typeof campaign.address === 'object'
+              ? campaign.address.city
+              : 'Location'}
+          </span>
         </div>
+
       </div>
 
       {/* Progress Bar Animated */}

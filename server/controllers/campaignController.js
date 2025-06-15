@@ -26,16 +26,19 @@ export const addCampaign = async (req, res) => {
 
 
 // Get Campaign : /api/campaign/list
-export const campaignList = async (req, res)=>{
-    try {
-        const campaigns = await Campaign.find({})
-        res.json({success: true, campaigns})
-    } catch (error) {
-        console.log(error.message);
-        res.json({success: false, message: error.message })
-    }
-    
-}
+export const campaignList = async (req, res) => {
+  try {
+    // Populate the address field
+    const campaigns = await Campaign.find({})
+      .populate('address')   // <-- populate Address reference
+      .populate('account');  // <-- you can also populate account if you want
+    res.json({ success: true, campaigns });
+  } catch (error) {
+    console.log(error.message);
+    res.json({ success: false, message: error.message });
+  }
+};
+
 
 // Get single Campaign : /api/campaign/id
 export const campaignById = async (req, res)=>{
