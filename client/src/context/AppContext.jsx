@@ -53,7 +53,7 @@ export const AppContextProvider = ({children}) => {
     // Fetch User Auth Status, UserData, and Cart Items
     const fetchUser = async () => {
         try {
-            const { data } = await axios.get('/api/user/is-auth');
+            const { data } = await axios.get('/api/admin/is-auth');
             if (data.success) {
                 setUser(data.user);
                 setCartItems(data.user.cartItems);
@@ -98,7 +98,7 @@ export const AppContextProvider = ({children}) => {
         showUserLogin, setShowUserLogin, campaigns, currency,
         cartItems, searchQuery, setSearchQuery, axios, fetchCampaigns,
         setCartItems, isAdmin, setIsAdmin, showPatientLogin, setShowPatientLogin,
-        patient, setPatient, getCartCount
+        patient, setPatient, getCartCount,fetchAdmin
     };
 
     return <AppContext.Provider value={value}>{children}</AppContext.Provider>

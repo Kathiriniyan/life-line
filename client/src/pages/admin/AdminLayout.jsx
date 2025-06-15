@@ -5,7 +5,7 @@ import { Link, NavLink, Outlet } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
 const AdminLayout = () => {
-  const { axios, navigate } = useAppContext();
+  const { axios, navigate,setIsAdmin } = useAppContext();
   const [openDropdown, setOpenDropdown] = useState(null);
 
   const sidebarLinks = [
@@ -33,17 +33,19 @@ const AdminLayout = () => {
 
   const logout = async () => {
     try {
-      const { data } = await axios.get('/api/admin/logout');
-      if (data.success) {
-        toast.success(data.message)
-        navigate('/')
-      } else {
-        toast.error(data.message)
-      }
+        const { data } = await axios.get('/api/admin/logout');
+        if (data.success) {
+            setIsAdmin(false);
+            toast.success(data.message);
+            navigate('/'); // or navigate('/admin') to go to login
+        } else {
+            toast.error(data.message);
+        }
     } catch (error) {
-      toast.error(error.message)
+        toast.error(error.message);
     }
-  }
+};
+
 
   return (
     <>
