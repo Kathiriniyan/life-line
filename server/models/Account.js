@@ -4,7 +4,7 @@ const accountSchema = new mongoose.Schema({
     patientId : {type: String, required: true, ref: 'patient'},
     fullName: {type: String, required: true},
     bankName: {type: String, required: true},
-    accNumber: {type: Number, required: true},
+    accNumber: {type: String, required: true},
     branch: {type: String, required: true},
 })
 

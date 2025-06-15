@@ -1,28 +1,23 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { assets, categories } from '../../assets/assets';
 import toast from 'react-hot-toast';
-import axios from 'axios';
 import { useAppContext } from '../../context/AppContext';
 
 const AddCampaign = () => {
-
-
     const [files, setFiles] = useState([]);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [category, setCategory] = useState('');
-    const [price, setPrice] = useState('');
     const [goalAmount, setGoalAmount] = useState('');
-    const [offerPrice, setOfferPrice] = useState('');
     const [endDate, setEndDate] = useState('');
     const [addresses, setAddresses] = useState([])
     const [showAddress, setShowAddress] = useState(false)
     const [selectedAddress, setSelectedAddress] = useState(null)
-    const [bankDetails, setBankDetails] = useState([])
-    const [showBankDetails, setShowBankDetails] = useState(false)
-    const [selectedBankDetails, setSelectedBankDetails] = useState(null)
+    const [account, setAccount] = useState([])
+    const [showAccount, setShowAccount] = useState(false)
+    const [selectedAccount, setSelectedAccount] = useState(null)
 
-    const { axios,navigate } = useAppContext()
+    const { axios, navigate, patient } = useAppContext()
 
     const onSubmitHandler = async (event) => {
         try {
@@ -33,7 +28,9 @@ const AddCampaign = () => {
                 description: description.split('\n'),
                 category,
                 goalAmount,
-                endDate
+                endDate,
+                address: selectedAddress?._id,   // <-- add this if needed
+                account: selectedAccount?._id
             }
 
             const formData = new FormData();
@@ -60,6 +57,47 @@ const AddCampaign = () => {
             toast.error(error.message);
         }
     }
+
+    const getPatientAddress = async ()=>{
+        try {
+            const { data } = await axios.get('/api/address/get');
+            if(data.success){
+                setAddresses(data.addresses)
+                if(data.addresses.length > 0){
+                    setSelectedAddress(data.addresses[0])
+                }
+            }else{
+                toast.error(data.message)
+            }
+        } catch (error) {
+            toast.error(error.message)
+        }
+    }
+
+    const getPatientAccount = async ()=>{
+    try {
+        const { data } = await axios.get('/api/account/get');
+        if(data.success){
+            setAccount(data.accounts)         // <-- Use "accounts"
+            if(data.accounts.length > 0){     // <-- Use "accounts"
+                setSelectedAccount(data.accounts[0])
+            }
+        }else{
+            toast.error(data.message)
+        }
+    } catch (error) {
+        toast.error(error.message)
+    }
+}
+
+
+    useEffect(()=>{
+    if(patient){
+        getPatientAddress();
+        getPatientAccount();
+    }
+},[patient])
+
 
     return (
         <div className="no-scrollbar flex-1 h-[95vh] overflow-y-scroll flex flex-col justify-between">
@@ -168,29 +206,29 @@ const AddCampaign = () => {
                         <div className="flex flex-col gap-2 mt-2">
                             <div className="flex justify-between items-start">
                                 <p className="text-gray-500">
-                                    {selectedBankDetails
-                                        ? `${selectedBankDetails.street},${selectedBankDetails.city},${selectedBankDetails.state},${selectedBankDetails.country}`
+                                    {selectedAccount
+                                        ? `${selectedAccount.fullName},${selectedAccount.bankName},${selectedAccount.accNumber},${selectedAccount.branch}`
                                         : "No Bank Details found"}
                                 </p>
                                 <button
-                                    onClick={() => setShowBankDetails(!showBankDetails)}
+                                    onClick={() => setShowAccount(!showAccount)}
                                     className="text-primary hover:underline cursor-pointer"
                                 >
                                     Change
                                 </button>
                             </div>
-                            {showBankDetails && (
+                            {showAccount && (
                                 <div className="py-1 bg-white border border-gray-300 text-sm w-full rounded mt-2">
-                                    {bankDetails.map((banks, index) => (
+                                    {account.map((accounts, index) => (
                                         <p
                                             key={index}
                                             onClick={() => {
-                                                setSelectedBankDetails(banks);
-                                                setShowBankDetails(false);
+                                                setSelectedAccount(accounts);
+                                                setShowAccount(false);
                                             }}
                                             className="text-gray-500 p-2 hover:bg-gray-100 cursor-pointer"
                                         >
-                                            {banks.street},{banks.city},{banks.state},{banks.country}
+                                            {accounts.fullName},{accounts.bankName},{accounts.accNumber},{accounts.branch}
                                         </p>
                                     ))}
                                     <p

@@ -4,7 +4,7 @@ const addressSchema = new mongoose.Schema({
     patientId : {type: String, required: true, ref: 'patient'},
     street: {type: String, required: true},
     city: {type: String, required: true},
-    province: {type: Number, required: true},
+    province: {type: String, required: true},
     phone: {type: String, required: true},
 })
 
