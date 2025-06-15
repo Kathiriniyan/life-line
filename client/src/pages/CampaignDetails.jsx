@@ -1,142 +1,148 @@
 import { useEffect, useState } from "react";
 import { useAppContext } from "../context/AppContext";
 import { Link, useParams } from "react-router-dom";
-import { assets } from "../assets/assets";
 import CampaignCards from "../components/CampaignCards";
 
+
+function getDaysLeft(endDate) {
+  const now = new Date();
+  const end = new Date(endDate);
+  const diff = Math.ceil((end - now) / (1000 * 60 * 60 * 24));
+  return diff >= 0 ? diff : 0;
+}
+
 const CampaignDetails = () => {
+  const { campaigns, navigate, currency = "LKR" } = useAppContext();
+  const { id } = useParams();
+  const [relatedCampaigns, setRelatedCampaigns] = useState([]);
+  const [thumbnail, setThumbnail] = useState(null);
+  const [progress, setProgress] = useState(0);
 
-    const { campaigns, navigate, currency, addToCart } = useAppContext()
-    const { id } = useParams()
-    const [relatedCampaigns, setRelatedCampaigns] = useState([]);
-    const [thumbnail, setThumbnail] = useState(null);
-    const [progress, setProgress] = useState(0);
+  const campaign = campaigns.find((item) => item._id === id);
 
-    const campaign = campaigns.find((item) => item._id === id);
+  const campaignProgress = campaign?.goalAmount && campaign?.collectedAmount
+    ? Math.min(campaign.collectedAmount / campaign.goalAmount, 1)
+    : 0;
 
-    // Animate progress bar
-    useEffect(() => {
-        let anim;
-        if (progress < campaign.progress) {
-            anim = setTimeout(() => setProgress((p) => {
-                const next = p + 0.02;
-                return next >= campaign.progress ? campaign.progress : next;
-            }), 16);
-        }
-        return () => clearTimeout(anim);
-    }, [progress, campaign.progress]);
+  useEffect(() => {
+    let anim;
+    if (progress < campaignProgress) {
+      anim = setTimeout(() => setProgress((p) => {
+        const next = p + 0.02;
+        return next >= campaignProgress ? campaignProgress : next;
+      }), 16);
+    }
+    return () => clearTimeout(anim);
+  }, [progress, campaignProgress]);
 
-    useEffect(() => {
-        if (campaigns.length > 0) {
-            let campaignsCopy = campaigns.slice();
-            campaignsCopy = campaignsCopy.filter((item) => campaign.category === item.category)
-            setRelatedCampaigns(campaignsCopy.slice(0, 5))
-        }
-    }, [campaigns])
+  useEffect(() => {
+    if (campaigns.length > 0 && campaign) {
+      let campaignsCopy = campaigns.slice();
+      campaignsCopy = campaignsCopy.filter((item) => campaign.category === item.category && item._id !== campaign._id);
+      setRelatedCampaigns(campaignsCopy.slice(0, 5));
+    }
+  }, [campaigns, campaign]);
 
-    useEffect(() => {
-        setThumbnail(campaign?.image[0] ? campaign.image[0] : null)
-    }, [campaign])
+  useEffect(() => {
+    setThumbnail(campaign?.image && campaign.image[0] ? campaign.image[0] : null)
+  }, [campaign]);
 
-    return campaign && (
-        <div className="mt-12">
-            <p>
-                <Link to={"/"}>Home</Link> /
-                <Link to={"/donate"}> Campaigns</Link> /
-                <Link to={`/donate/${campaign.category.toLowerCase()}`}> {campaign.category}</Link> /
-                <span className="text-primary"> {campaigns.name}</span>
-            </p>
+  if (!campaign) return null;
 
-            <div className="flex flex-col md:flex-row gap-16 mt-4">
-                <div className="flex gap-3">
-                    <div className="flex flex-col gap-3">
-                        {campaign.image.map((image, index) => (
-                            <div key={index} onClick={() => setThumbnail(image)} className="border max-w-24 border-gray-500/30 rounded overflow-hidden cursor-pointer" >
-                                <img src={image} alt={`Thumbnail ${index + 1}`} />
-                            </div>
-                        ))}
-                    </div>
+  const daysLeft = getDaysLeft(campaign.endDate);
 
-                    <div className="border border-gray-500/30 max-w-100 rounded overflow-hidden">
-                        <img src={thumbnail} alt="Selected product" />
-                    </div>
-                </div>
+  return (
+    <div className="mt-12">
+      <p>
+        <Link to={"/"}>Home</Link> /
+        <Link to={"/donate"}> Campaigns</Link> /
+        <Link to={`/donate/${campaign.category.toLowerCase()}`}> {campaign.category}</Link> /
+        <span className="text-primary"> {campaign.title}</span>
+      </p>
 
-                <div className="text-sm w-full md:w-1/2">
-                    <h1 className="text-3xl font-medium">{campaign.title}</h1>
+      <div className="flex flex-col md:flex-row gap-16 mt-4">
+        <div className="flex gap-3">
+          <div className="flex flex-col gap-3">
+            {campaign.image && campaign.image.map((image, index) => (
+              <div key={index} onClick={() => setThumbnail(image)} className="border max-w-24 border-gray-500/30 rounded overflow-hidden cursor-pointer" >
+                <img src={image} alt={`Thumbnail ${index + 1}`} />
+              </div>
+            ))}
+          </div>
 
-                    <div className="mt-6">
-                        {/* <p className="text-gray-500/70 line-through">MRP: {currency}{campaign.price}</p> */}
-
-
-                        <div className="flex items-center gap-2 mb-2">
-                            <div className="bg-gray-200 w-full h-2 rounded-full overflow-hidden">
-                                <div className="bg-red-500 h-2 rounded-full transition-all duration-700" style={{ width: `${progress * 100}%` }}></div>
-                            </div>
-                            <span className="text-xs font-semibold text-gray-600">{Math.round(progress * 100)}%</span>
-                        </div>
-
-                        <div className="flex justify-between items-center mb-3 text-xs text-gray-500">
-                            <div className="flex items-center gap-1 text-xl">
-                                {/* Donor SVG (user icon) */}
-                                <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="#64748b" /></svg>
-                                {campaign.donors} Donors
-                            </div>
-                            <div className="flex items-center gap-1 text-xl">
-                                <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="#64748b" strokeWidth="2" /><path d="M12 6v6l4 2" stroke="#64748b" strokeWidth="2" /></svg>
-                                {campaign.daysLeft} days left
-                            </div>
-                        </div>
-
-
-
-
-                        <p className="text-2xl font-medium">Goal: {currency}{campaign.goal_amount.toLocaleString()}</p>
-                        <span className="text-gray-500/70">(inclusive of all taxes)</span>
-                    </div>
-
-                    <p className="text-base font-medium mt-6">About Campaign</p>
-                    <ul className="list-disc ml-4 text-gray-500/70">
-                        {campaign.description[0]}
-                    </ul>
-
-                    <div className="flex items-center mt-10 gap-4 text-base">
-                        {/* <button onClick={() => addToCart(campaign._id)} className="w-full py-3.5 cursor-pointer font-medium bg-gray-100 text-gray-800/80 hover:bg-gray-200 transition" >
-                            Add to Cart
-                        </button> */}
-                        <button onClick={() => { navigate(`/pay/${campaign._id}`) }} className="w-full py-3.5 cursor-pointer font-medium bg-primary text-white rounded-xl shadow-xl hover:bg-primary-dull transition" >
-                            Donate Now
-                        </button>
-                    </div>
-                </div>
-
-            </div>
-
-            <div className="flex flex-col items-center mt-10">
-                <p className="text-base font-medium mt-6">Our Story</p>
-                <ul className="list-disc ml-4 mt-6 text-gray-500/70">
-                    {campaign.description.map((desc, index) => (
-                        <li key={index}>{desc}</li>
-                    ))}
-                </ul>
-            </div>
-
-            {/* --------------- Related Campaign------------------ */}
-            <div className=" flex flex-col items-center mt-20">
-                <div className="flex flex-col items-center w-max">
-                    <p className="text-3xl font-medium">Related Campaign</p>
-                    <div className="w-20 h-0.5 bg-primary rounded-full mt-2"></div>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-6 lg:grid-cols-3 mt-6">
-                    {relatedCampaigns.filter((campaign) => campaign.isApprove).map((campaign, index) => (
-                        <CampaignCards key={index} campaign={campaign} />
-                    ))}
-                </div>
-                <button onClick={() => { navigate('/donate'); scrollTo(0, 0) }} className="mx-auto cursor-pointer px-12 my-16 py-2.5 border rounded text-primary hover:bg-primary/10 transition">See more</button>
-            </div>
+          <div className="border border-gray-500/30 max-w-100 rounded overflow-hidden">
+            <img src={thumbnail} alt="Selected product" />
+          </div>
         </div>
-    );
+
+        <div className="text-sm w-full md:w-1/2">
+          <h1 className="text-3xl font-medium flex items-center gap-2">
+            {campaign.title}
+            {campaign.isEmergency && (
+              <span className="ml-2 text-xs bg-red-100 text-red-600 px-2 py-1 rounded-full font-semibold">Emergency</span>
+            )}
+          </h1>
+
+          <div className="mt-6">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="bg-gray-200 w-full h-2 rounded-full overflow-hidden">
+                <div className="bg-red-500 h-2 rounded-full transition-all duration-700" style={{ width: `${progress * 100}%` }}></div>
+              </div>
+              <span className="text-xs font-semibold text-gray-600">{Math.round(progress * 100)}%</span>
+            </div>
+
+            <div className="flex justify-between items-center mb-3 text-xs text-gray-500">
+              <div className="flex items-center gap-1 text-xl">
+                <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="#64748b" /></svg>
+                {campaign.donors || 0} Donors
+              </div>
+              <div className="flex items-center gap-1 text-xl">
+                <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="#64748b" strokeWidth="2" /><path d="M12 6v6l4 2" stroke="#64748b" strokeWidth="2" /></svg>
+                {daysLeft} days left
+              </div>
+            </div>
+
+            <p className="text-2xl font-medium">Goal: {currency}{campaign.goalAmount?.toLocaleString()}</p>
+            <span className="text-gray-500/70">(inclusive of all taxes)</span>
+          </div>
+
+          <p className="text-base font-medium mt-6">About Campaign</p>
+          <ul className="list-disc ml-4 text-gray-500/70">
+            {campaign.description[0]}
+          </ul>
+
+          <div className="flex items-center mt-10 gap-4 text-base">
+            <button onClick={() => { navigate(`/pay/${campaign._id}`) }} className="w-full py-3.5 cursor-pointer font-medium bg-primary text-white rounded-xl shadow-xl hover:bg-primary-dull transition" >
+              Donate Now
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex flex-col items-center mt-10">
+        <p className="text-base font-medium mt-6">Our Story</p>
+        <ul className="list-disc ml-4 mt-6 text-gray-500/70">
+          {campaign.description.map((desc, index) => (
+            <li key={index}>{desc}</li>
+          ))}
+        </ul>
+      </div>
+
+      {/* --------------- Related Campaign------------------ */}
+      <div className=" flex flex-col items-center mt-20">
+        <div className="flex flex-col items-center w-max">
+          <p className="text-3xl font-medium">Related Campaign</p>
+          <div className="w-20 h-0.5 bg-primary rounded-full mt-2"></div>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-6 lg:grid-cols-3 mt-6">
+          {relatedCampaigns.filter((item) => item.isApprove).map((related, idx) => (
+            <CampaignCards key={idx} campaign={related} />
+          ))}
+        </div>
+        <button onClick={() => { navigate('/donate'); scrollTo(0, 0) }} className="mx-auto cursor-pointer px-12 my-16 py-2.5 border rounded text-primary hover:bg-primary/10 transition">See more</button>
+      </div>
+    </div>
+  );
 };
 
-
-export default CampaignDetails
+export default CampaignDetails;

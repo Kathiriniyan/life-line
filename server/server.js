@@ -10,6 +10,7 @@ import { inngest, functions } from "./inngest/index.js"
 import patientRouter from './routes/patientRouter.js';
 import addressRouter from './routes/addressRoute.js';
 import accountRouter from './routes/accountRoute.js';
+import campaignRouter from './routes/campaignRoutes.js';
 
 
 
@@ -33,6 +34,7 @@ app.use('/api/inngest', serve({ client: inngest, functions }))
 app.use('/api/patient', patientRouter)
 app.use('/api/address', addressRouter)
 app.use('/api/account', accountRouter)
+app.use('/api/campaign', campaignRouter)
 
 
 
