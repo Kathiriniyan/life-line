@@ -13,19 +13,19 @@ const AdminLogin = () => {
         const [password, setPassword] = useState("");
     
         const onSubmitHandler = async (event)=>{
-            // try {
+            try {
                 event.preventDefault();
                 setIsAdmin(true)
-            //     const {data} = await axios.post('/api/admin/login',{email, password})
-            //     if(data.success){
-            //         setIsAdmin(true)
-            //         navigate('admin')
-            //     }else{
-            //         toast.error(data.message)
-            //     }
-            // } catch (error) {
-            //     toast.error(error.message)
-            // }
+                const {data} = await axios.post('/api/admin/login',{email, password})
+                if(data.success){
+                    setIsAdmin(true)
+                    navigate('admin')
+                }else{
+                    toast.error(data.message)
+                }
+            } catch (error) {
+                toast.error(error.message)
+            }
         }
     
         useEffect(()=>{

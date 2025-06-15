@@ -88,7 +88,7 @@ export const AppContextProvider = ({children}) => {
 
     useEffect(() => {
         //fetchUser();
-        //fetchAdmin();
+        fetchAdmin();
         fetchPatientAuth();
         fetchCampaigns(); // << correct function!
     }, []);

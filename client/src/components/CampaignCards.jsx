@@ -78,7 +78,7 @@ const CampaignCards = ({ campaign }) => {
 
   return (
     <div
-      className="group border border-gray-300 rounded-xl bg-white shadow-md p-4 max-w-sm mx-auto relative"
+      className="group border border-gray-300 rounded-xl bg-white shadow-md p-4 min-h-[28rem] mx-auto min-w-[18rem] max-w-[23rem] w-full relative"
       onClick={() => {
         navigate(`/donate/${campaign.category.toLowerCase()}/${campaign._id}`);
         scrollTo(0, 0);

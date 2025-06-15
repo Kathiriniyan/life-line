@@ -53,6 +53,25 @@ export const campaignById = async (req, res)=>{
 }
 
 
+
+// Get Campaigns by Patient ID : /api/campaign/patient
+export const campaignsByPatient = async (req, res) => {
+  try {
+    const patientId = req.patientId; // comes from authPatient middleware
+    const campaigns = await Campaign.find({ patientId })
+      .populate('address')   // optional: populate address details
+      .populate('account');  // optional: populate account details
+    res.json({ success: true, campaigns });
+  } catch (error) {
+    console.log(error.message);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+
+
+
+
 // change campain Approve : /api/campaign/approve
 export const changeApprove = async (req, res)=>{
     try {
