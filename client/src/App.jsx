@@ -27,10 +27,10 @@ import AddBankAccount from './pages/patient/AddBankAccount'
 import Favorite from './pages/Favorite'
 import Over_view from './pages/patient/Over_view'
 import CampaignRequest from './pages/admin/CampaignRequest'
-import PatientDetails from './pages/admin/PatientDetails'
 import DonarDetail from './pages/admin/DonarDetail'
 import PatientRequest from './pages/admin/PatientRequest'
 import CampaignHistory from './pages/admin/CampaignHistory'
+import PatientList from './pages/admin/PatientList'
 
 const App = () => {
 
@@ -70,7 +70,7 @@ const App = () => {
             <Route path='campaign-history' element={<CampaignHistory/>}/>
             <Route path='campaign-approve' element={<CampaignRequest/>}/>
             <Route path='patient-request' element={<PatientRequest/>}/>
-            <Route path='patient-details' element={<PatientDetails/>}/>
+            <Route path='patient-details' element={<PatientList/>}/>
             <Route path='donar-details' element={<DonarDetail/>}/>
           </Route>
           

@@ -99,3 +99,16 @@ export const logout = async(req, res)=>{
         res.json({ success: false, message: error.message})
     }
 }
+
+
+
+
+// Get Campaign : /api/campaign/list
+export const patientList = async (req, res) => {
+  try {
+    const patients = await Patient.find({}).select('-password');
+    res.json({ success: true, patients });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};

@@ -13,7 +13,8 @@ export const AppContextProvider = ({children}) => {
 
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
-    const [patient, setPatient] = useState(null);
+    const [patient, setPatient] = useState(null); // current user
+    const [patients, setPatients] = useState([]); // all patients
     const [isPatient, setIsPatient] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
     const [showUserLogin, setShowUserLogin] = useState(false);
@@ -77,6 +78,22 @@ export const AppContextProvider = ({children}) => {
         }
     };
 
+
+    // Fetch All Patient (from server)
+    const fetchPatients = async () => {
+    try {
+        const { data } = await axios.get('/api/patient/all-patients');
+        if (data.success) {
+            setPatients(data.patients);
+        } else {
+            toast.error(data.message);
+        }
+    } catch (error) {
+        toast.error(error.message);
+    }
+};
+
+
     // Get Cart Item Count
     const getCartCount = () => {
         let totalCount = 0;
@@ -87,7 +104,7 @@ export const AppContextProvider = ({children}) => {
     };
 
     useEffect(() => {
-        //fetchUser();
+        fetchPatients();
         fetchAdmin();
         fetchPatientAuth();
         fetchCampaigns(); // << correct function!
@@ -98,7 +115,7 @@ export const AppContextProvider = ({children}) => {
         showUserLogin, setShowUserLogin, campaigns, currency,
         cartItems, searchQuery, setSearchQuery, axios, fetchCampaigns,
         setCartItems, isAdmin, setIsAdmin, showPatientLogin, setShowPatientLogin,
-        patient, setPatient, getCartCount,fetchAdmin
+        patient, setPatient, getCartCount,fetchAdmin,patient, patients, setPatients, fetchPatients
     };
 
     return <AppContext.Provider value={value}>{children}</AppContext.Provider>
