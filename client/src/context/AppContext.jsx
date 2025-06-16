@@ -51,18 +51,6 @@ export const AppContextProvider = ({children}) => {
         }
     };
 
-    // Fetch User Auth Status, UserData, and Cart Items
-    const fetchUser = async () => {
-        try {
-            const { data } = await axios.get('/api/admin/is-auth');
-            if (data.success) {
-                setUser(data.user);
-                setCartItems(data.user.cartItems);
-            }
-        } catch {
-            setUser(null);
-        }
-    };
 
     // Fetch All Campaigns (from server)
     const fetchCampaigns = async () => {

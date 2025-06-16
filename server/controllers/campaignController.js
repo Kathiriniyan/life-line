@@ -68,7 +68,19 @@ export const campaignsByPatient = async (req, res) => {
   }
 };
 
-
+// GET /api/campaign/by-patient/:id
+export const campaignsByPatientId = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const campaigns = await Campaign.find({ patientId: id })
+      .populate('address')
+      .populate('account');
+    res.json({ success: true, campaigns });
+  } catch (error) {
+    console.log(error.message);
+    res.json({ success: false, message: error.message });
+  }
+};
 
 
 

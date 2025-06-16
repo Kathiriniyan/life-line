@@ -27,7 +27,7 @@ const Over_view = () => {
 
     return (
         <div className="flex-1 w-full max-w-full md:ml-10 md:mr-30">
-            <div className="ax-w-3xl w-full mx-auto p-2 sm:p-4 md:py-8 md:px-6">
+            <div className=" w-full mx-auto p-2 sm:p-4 md:py-8 md:px-6">
                 <h1 className="text-2xl md:text-3xl font-bold mb-4">Dashboard</h1>
                 {campaigns.map((campaign) => {
                     const percent = Math.round((campaign.collectedAmount / campaign.goalAmount) * 100);

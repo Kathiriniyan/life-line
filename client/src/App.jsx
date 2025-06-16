@@ -31,6 +31,7 @@ import DonarDetail from './pages/admin/DonarDetail'
 import PatientRequest from './pages/admin/PatientRequest'
 import CampaignHistory from './pages/admin/CampaignHistory'
 import PatientList from './pages/admin/PatientList'
+import PatientDetail from './pages/admin/patientDetail'
 
 const App = () => {
 
@@ -71,6 +72,7 @@ const App = () => {
             <Route path='campaign-approve' element={<CampaignRequest/>}/>
             <Route path='patient-request' element={<PatientRequest/>}/>
             <Route path='patient-details' element={<PatientList/>}/>
+            <Route path='patient-details/:id' element={<PatientDetail/>}/>
             <Route path='donar-details' element={<DonarDetail/>}/>
           </Route>
           

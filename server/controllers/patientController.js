@@ -112,3 +112,16 @@ export const patientList = async (req, res) => {
     res.json({ success: false, message: error.message });
   }
 };
+
+
+// controllers/patientController.js
+export const getPatientById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const patient = await Patient.findById(id).select("-password");
+    if (!patient) return res.json({ success: false, message: "Not found" });
+    res.json({ success: true, patient });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};

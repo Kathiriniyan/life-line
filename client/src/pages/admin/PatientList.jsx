@@ -23,7 +23,7 @@ const PatientList = () => {
                         <tbody className="text-sm text-gray-500">
                             {patients.map((patient) => (
                                 <tr key={patient._id} className="border-t border-gray-500/20">
-                                    <td onClick={()=> {navigate(`/admin/patient-detail/${patient._id}`); scrollTo(0,0)}} className="md:px-4 pl-2 md:pl-4 py-3 flex items-center space-x-3 truncate cursor-pointer">
+                                    <td onClick={()=> {navigate(`/admin/patient-details/${patient._id}`); scrollTo(0,0)}} className="md:px-4 pl-2 md:pl-4 py-3 flex items-center space-x-3 truncate cursor-pointer">
                                         <span className="truncate max-sm:hidden w-full">{patient.name}</span>
                                     </td>
                                     <td className="px-4 py-3">{patient.email}</td>
