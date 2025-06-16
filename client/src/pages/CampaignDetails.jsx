@@ -112,7 +112,7 @@ const CampaignDetails = () => {
           </ul>
 
           <div className="flex items-center mt-10 gap-4 text-base">
-            <button onClick={() => { navigate(`/pay/${campaign._id}`) }} className="w-full py-3.5 cursor-pointer font-medium bg-primary text-white rounded-xl shadow-xl hover:bg-primary-dull transition" >
+            <button onClick={() => { navigate(`donate/pay/${campaign._id}`) }} className="w-full py-3.5 cursor-pointer font-medium bg-primary text-white rounded-xl shadow-xl hover:bg-primary-dull transition" >
               Donate Now
             </button>
           </div>

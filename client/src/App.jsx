@@ -9,7 +9,6 @@ import Login from './components/Login'
 import AllCampaign from './pages/AllCampaign'
 import CampaignCategory from './pages/CampaignCategory'
 import CampaignDetails from './pages/CampaignDetails'
-import Cart from './pages/Cart'
 import MyDonation from './pages/MyDonation'
 import PatientLogin from './components/patient/PatientLogin'
 import PatientLayout from './pages/patient/PatientLayout'
@@ -32,6 +31,7 @@ import PatientRequest from './pages/admin/PatientRequest'
 import CampaignHistory from './pages/admin/CampaignHistory'
 import PatientList from './pages/admin/PatientList'
 import PatientDetail from './pages/admin/patientDetail'
+import Payment from './pages/Payment'
 
 const App = () => {
 
@@ -53,6 +53,7 @@ const App = () => {
           <Route path='/donate' element={<AllCampaign/>} />
           <Route path='/donate/:category' element={<CampaignCategory/>} />
           <Route path='/donate/:category/:id' element={<CampaignDetails/>} />
+          <Route path='/donate/pay/:id' element={<Payment/>} />
           <Route path='/favourite' element={<Favorite/>} />
           <Route path='/my-donation' element={<MyDonation/>} />
           <Route path='/patient' element={isPatient ? <PatientLayout/> : <PatientLogin/>}>
