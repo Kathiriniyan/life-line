@@ -1,32 +1,73 @@
-import Campaign from "../models/Campaign.js";
 import stripe from "stripe";
 import { v4 as uuidv4 } from 'uuid';
+import Campaign from "../models/Campaign.js";
 import Donation from "../models/Donation.js";
 
-
-// Donation : /api/donation
-export const donation = async (req, res) => {
+// Add Donation
+export const createDonation = async (req, res) => {
     try {
-        const donorId = req.donorId;
-        const { items, message, isAnonymous } = req.body;
+        const { campaignId, donorId, amount, message, isAnonymous } = req.body;
 
-        if (!Array.isArray(items) || items.length === 0) {
-            return res.json({ success: false, message: "Invalid data" });
-        }
+        // Validate campaign exists & is approved
+        const campaign = await Campaign.findById(campaignId);
+        if (!campaign) return res.json({ success: false, message: "Campaign not found" });
+        if (!campaign.isApprove) return res.json({ success: false, message: "Campaign is private" });
 
-        const newDonation = await Donation.create({
-            _id: uuidv4(), // use a unique string, or remove this line if you want Mongo to auto-create it as ObjectId
-            donorId,
-            items,
-            message,
-            isAnonymous: !!isAnonymous,
+        if (!donorId) return res.json({ success: false, message: "Login required" });
+        if (amount < 100) return res.json({ success: false, message: "Minimum amount is 100" });
+
+        // Save donation
+        const donation = await Donation.create({
+            donorId, campaign: campaignId, amount, message, isAnonymous,
         });
 
-        return res.json({ success: true, message: "Donation Successful", donationId: newDonation._id });
+        // Update collected amount
+        campaign.collectedAmount += amount;
+        await campaign.save();
+
+        res.json({ success: true, message: "Donation Successful", donation });
     } catch (error) {
-        return res.json({ success: false, message: error.message });
+        console.log(error.message);
+        res.json({ success: false, message: error.message });
     }
 };
+
+// List all donations (for admin)
+export const allDonations = async (req, res) => {
+    try {
+        const donations = await Donation.find({})
+            .populate('donorId', 'name email')
+            .populate('campaign', 'title');
+        res.json({ success: true, donations });
+    } catch (error) {
+        res.json({ success: false, message: error.message });
+    }
+};
+
+// List patient/donor's donations (use donorId from JWT)
+export const userDonations = async (req, res) => {
+    try {
+        const donorId = req.donorId || req.userId;
+        const donations = await Donation.find({ donorId })
+            .populate('campaign', 'title');
+        res.json({ success: true, donations });
+    } catch (error) {
+        res.json({ success: false, message: error.message });
+    }
+};
+
+// List campaign's donations (for patient)
+export const campaignDonations = async (req, res) => {
+    try {
+        const { campaignId } = req.params;
+        const donations = await Donation.find({ campaign: campaignId })
+            .populate('donorId', 'name email');
+        res.json({ success: true, donations });
+    } catch (error) {
+        res.json({ success: false, message: error.message });
+    }
+};
+
 
 
 

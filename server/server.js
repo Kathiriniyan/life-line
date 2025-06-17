@@ -12,6 +12,7 @@ import addressRouter from './routes/addressRoute.js';
 import accountRouter from './routes/accountRoute.js';
 import campaignRouter from './routes/campaignRoutes.js';
 import adminRouter from './routes/adminRoutes.js';
+import donationRouter from './routes/donationRouter.js';
 
 
 
@@ -36,6 +37,7 @@ app.use('/api/patient', patientRouter)
 app.use('/api/address', addressRouter)
 app.use('/api/account', accountRouter)
 app.use('/api/campaign', campaignRouter)
+app.use('/api/donation', donationRouter)
 app.use('/api/admin', adminRouter)
 
 

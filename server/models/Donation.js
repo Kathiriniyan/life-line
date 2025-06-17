@@ -1,16 +1,13 @@
 import mongoose from "mongoose";
 
 const donationSchema = new mongoose.Schema({
-    _id: {type: String, required: true},
-    donorId : {type: String, required: true, ref: 'donor'},
-    items: [{
-        campaign: {type: String, required: true, ref: 'campaign'},
-        amount: {type: Number, required: true}
-    }],
-    message: {type: String, default:null},
+    donorId: { type: String, required: true, ref: 'donor' }, // or 'user'
+    campaign: { type: String, required: true, ref: 'campaign' },
+    amount: { type: Number, required: true },
+    message: { type: String, default: null },
     isAnonymous: { type: Boolean, default: false },
-}, { timestamps: true })
+}, { timestamps: true });
 
-const Donation = mongoose.models.donation || mongoose.model('donation', donationSchema)
-
+const Donation = mongoose.models.donation || mongoose.model('donation', donationSchema);
 export default Donation;
+
