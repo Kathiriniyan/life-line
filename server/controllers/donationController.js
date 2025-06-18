@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import Campaign from "../models/Campaign.js";
 import Donation from "../models/Donation.js";
 
+
 // Add Donation
 export const createDonation = async (req, res) => {
     try {
@@ -56,18 +57,22 @@ export const userDonations = async (req, res) => {
     }
 };
 
-// List campaign's donations (for patient)
-export const campaignDonations = async (req, res) => {
-    try {
-        const { campaignId } = req.params;
-        const donations = await Donation.find({ campaign: campaignId })
-            .populate('donorId', 'name email');
-        res.json({ success: true, donations });
-    } catch (error) {
-        res.json({ success: false, message: error.message });
-    }
-};
 
+
+// GET /api/donation/campaign/:campaignId
+export const campaignDonations = async (req, res) => {
+  try {
+    const { campaignId } = req.params;
+    // Populate donorId with name, email, image for each donation
+    const donations = await Donation.find({ campaign: campaignId })
+      .populate('donorId', 'name email image')
+      .sort({ createdAt: -1 });
+
+    res.json({ success: true, donations });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
 
 
 
@@ -106,3 +111,20 @@ export const getAllDonation = async (req, res) => {
         res.json({ success: false, message: error.message });
     }
 };
+
+// GET /api/donation/donor/:id
+export const donationsByDonor = async (req, res) => {
+  try {
+    const donorId = req.params.id;
+    const donations = await Donation.find({ donorId })
+      .populate('campaign')
+      .sort({ createdAt: -1 });
+    res.json({ success: true, donations });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
+
+
+
+

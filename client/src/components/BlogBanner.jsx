@@ -10,7 +10,7 @@ const steps = [
     desc: "No paperwork hassle – just fill in the patient details, upload documents, set your goal, and launch within minutes.",
     secureTitle: "Secure & Easy to Donate:",
     secureDesc: "Supporters can verify your cause with uploaded medical records and donate securely. Whether it’s for surgery, treatment, or recovery, every share counts.",
-    img: assets.banner_ab,
+    img: assets.banner_ab_1,
   },
   {
     num: "02",
@@ -18,7 +18,7 @@ const steps = [
     desc: "Let your loved ones become your strength. Share your story on WhatsApp, Facebook, or Instagram, and speak about it in your community.",
     secureTitle: "Secure & Easy to Donate:",
     secureDesc: "Supporters can verify your cause with uploaded medical records and donate securely. Whether it’s for surgery, treatment, or recovery, every share counts.",
-    img: assets.banner_ab,
+    img: assets.banner_ab_2,
   },
   {
     num: "03",
@@ -26,7 +26,7 @@ const steps = [
     desc: "Stay updated with each donation and encouraging message. Transparency builds trust with your donors.",
     secureTitle: "Secure & Easy to Donate:",
     secureDesc: "Supporters can verify your cause with uploaded medical records and donate securely. Whether it’s for surgery, treatment, or recovery, every share counts.",
-    img: assets.banner_ab,
+    img: assets.banner_ab_3,
   },
   {
     num: "04",
@@ -34,7 +34,7 @@ const steps = [
     desc: "Receive funds directly into your bank or hospital account with quick and secure disbursements.",
     secureTitle: "Secure & Easy to Donate:",
     secureDesc: "Supporters can verify your cause with uploaded medical records and donate securely. Whether it’s for surgery, treatment, or recovery, every share counts.",
-    img: assets.banner_ab,
+    img: assets.banner_ab_4,
   },
 ];
 
@@ -46,7 +46,7 @@ const BlogBanner = () => {
 
   return (
     <div className='mt-24 items-start shadow-xl rounded-2xl md:items-center'>
-    <section className=" min-h-[60vh] flex flex-col items-center rounded-2xl py-6 px-2 border border-gray-300">
+    <section className=" min-h-[60vh] flex flex-col items-center rounded-2xl py-6 px-2 border border-primary-dull">
       <div className="text-center max-w-2xl mx-auto mb-6">
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-primary mb-3 tracking-tight">
           Quick Life Line Fundraisers!
@@ -56,7 +56,7 @@ const BlogBanner = () => {
           Launching a campaign takes just minutes and connects you with donors who care.
         </p>
       </div>
-
+      
       {/* Featured Step Card */}
       <div
         className="w-full max-w-5xl bg-white border-2 border-gray-400 rounded-xl shadow-md p-4 flex flex-row items-stretch mb-8 transition-all duration-300"
@@ -89,15 +89,15 @@ const BlogBanner = () => {
         </div>
         {/* Right */}
         <div className="flex-1 flex justify-center items-center">
-          <div className="bg-gray-100 rounded-md flex items-center justify-center w-full h-[170px] sm:h-[210px] md:h-[240px]">
+          <div className=" rounded-md flex items-center justify-center w-full h-[170px] sm:h-[210px] md:h-[240px]">
             <img
               src={
                 isMobile || hoveredStep === null
-                  ? assets.banner_ab
+                  ? assets.banner_ab_main 
                   : steps[hoveredStep].img
               }
               alt="Step visual"
-              className="object-contain w-full h-full rounded-md"
+              className="object-contain w-full h-full rounded-md "
             />
           </div>
         </div>

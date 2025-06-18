@@ -8,7 +8,7 @@ axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
 
 export const AppContext = createContext();
 
-export const AppContextProvider = ({children}) => {
+export const AppContextProvider = ({ children }) => {
     const currency = import.meta.env.VITE_CURRENCY;
 
     const navigate = useNavigate();
@@ -23,6 +23,14 @@ export const AppContextProvider = ({children}) => {
     const [cartItems, setCartItems] = useState({});
     const [searchQuery, setSearchQuery] = useState(""); // as a string
     const [favouriteCampaigns, setFavouriteCampaigns] = useState({});
+    const [donors, setDonors] = useState([]);
+
+    const fetchDonors = async () => {
+        try {
+            const { data } = await axios.get('/api/donor/list');
+            if (data.success) setDonors(data.donors);
+        } catch (e) { }
+    };
 
     // Fetch Patient Auth Status
     const fetchPatientAuth = async () => {
@@ -69,17 +77,17 @@ export const AppContextProvider = ({children}) => {
 
     // Fetch All Patient (from server)
     const fetchPatients = async () => {
-    try {
-        const { data } = await axios.get('/api/patient/all-patients');
-        if (data.success) {
-            setPatients(data.patients);
-        } else {
-            toast.error(data.message);
+        try {
+            const { data } = await axios.get('/api/patient/all-patients');
+            if (data.success) {
+                setPatients(data.patients);
+            } else {
+                toast.error(data.message);
+            }
+        } catch (error) {
+            toast.error(error.message);
         }
-    } catch (error) {
-        toast.error(error.message);
-    }
-};
+    };
 
 
     // Get Cart Item Count
@@ -103,7 +111,7 @@ export const AppContextProvider = ({children}) => {
         showUserLogin, setShowUserLogin, campaigns, currency,
         cartItems, searchQuery, setSearchQuery, axios, fetchCampaigns,
         setCartItems, isAdmin, setIsAdmin, showPatientLogin, setShowPatientLogin,
-        patient, setPatient, getCartCount,fetchAdmin,patient, patients, setPatients, fetchPatients
+        patient, setPatient, getCartCount, fetchAdmin, patient, patients, setPatients, fetchPatients,donors,setDonors,fetchDonors
     };
 
     return <AppContext.Provider value={value}>{children}</AppContext.Provider>

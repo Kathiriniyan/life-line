@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useAppContext } from '../context/AppContext'
 
 import CampaignCards from '../components/CampaignCards'
+import Categories from '../components/Categories'
 
 const AllCampaign = () => {
 
@@ -19,7 +20,9 @@ const AllCampaign = () => {
     },[campaigns,searchQuery])
 
   return (
-    <div className='mt-16 flex flex-col'>
+    <div>
+      <Categories/>
+      <div className='mt-16 flex flex-col'>
       <div className='flex flex-col items-end w-max'>
         <p className='text-2xl font-medium uppercase'>All Campaign</p>
         <div className='w-16 h-0.5 bg-primary rounded-full'></div>
@@ -31,6 +34,8 @@ const AllCampaign = () => {
         ))}
       </div>
     </div>
+    </div>
+    
   )
 }
 

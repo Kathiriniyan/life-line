@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const donationSchema = new mongoose.Schema({
-    donorId: { type: String, required: true, ref: 'donor' }, // or 'user'
+    donorId: { type: String, required: true, ref: 'donor' },
     campaign: { type: String, required: true, ref: 'campaign' },
     amount: { type: Number, required: true },
     message: { type: String, default: null },

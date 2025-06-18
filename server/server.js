@@ -13,6 +13,8 @@ import accountRouter from './routes/accountRoute.js';
 import campaignRouter from './routes/campaignRoutes.js';
 import adminRouter from './routes/adminRoutes.js';
 import donationRouter from './routes/donationRouter.js';
+import donorRouter from './routes/donorRouter.js';
+import adminStatsRouter from './routes/adminStatsRouter.js';
 
 
 
@@ -38,7 +40,9 @@ app.use('/api/address', addressRouter)
 app.use('/api/account', accountRouter)
 app.use('/api/campaign', campaignRouter)
 app.use('/api/donation', donationRouter)
+app.use('/api/donor', donorRouter)
 app.use('/api/admin', adminRouter)
+app.use('/api/admin', adminStatsRouter);
 
 
 

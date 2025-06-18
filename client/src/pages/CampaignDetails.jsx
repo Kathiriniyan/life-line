@@ -12,17 +12,31 @@ function getDaysLeft(endDate) {
 }
 
 const CampaignDetails = () => {
-  const { campaigns, navigate, currency = "LKR" } = useAppContext();
+  const { campaigns, navigate, axios, currency = "LKR" } = useAppContext();
   const { id } = useParams();
   const [relatedCampaigns, setRelatedCampaigns] = useState([]);
   const [thumbnail, setThumbnail] = useState(null);
   const [progress, setProgress] = useState(0);
+  const [donations, setDonations] = useState([]);
 
   const campaign = campaigns.find((item) => item._id === id);
 
   const campaignProgress = campaign?.goalAmount && campaign?.collectedAmount
     ? Math.min(campaign.collectedAmount / campaign.goalAmount, 1)
     : 0;
+
+  useEffect(() => {
+    // Fetch campaign donations
+    const fetchDonations = async () => {
+      try {
+        const { data } = await axios.get(`/api/donation/campaign/${campaign?._id}`);
+        if (data.success) setDonations(data.donations);
+      } catch (err) {
+        setDonations([]);
+      }
+    };
+    if (campaign) fetchDonations();
+  }, [campaign, axios]);
 
   useEffect(() => {
     let anim;
@@ -127,6 +141,65 @@ const CampaignDetails = () => {
           ))}
         </ul>
       </div>
+
+
+
+
+
+      {/* ---------- Supporters/Donors Section ------------- */}
+      {donations.length > 0 && (
+        <div className="flex flex-col items-center mt-16 w-full">
+          <div className="flex flex-col items-center w-max">
+            <p className="text-3xl font-medium">Supporters</p>
+            <div className="w-20 h-0.5 bg-primary rounded-full mt-2"></div>
+          </div>
+          <div className="mt-8 w-full max-w-2xl">
+            {donations.map((donation, idx) => (
+              <div
+                key={donation._id || idx}
+                className="flex items-center gap-5 p-4 mb-3 bg-white shadow rounded-lg"
+              >
+                <img
+                  src={
+                    donation.isAnonymous
+                      ? "/anonymous-user.png"
+                      : donation.donorId?.image || "/default-user.png"
+                  }
+                  alt="Supporter"
+                  className="w-12 h-12 rounded-full object-cover border"
+                />
+                <div className="flex flex-col flex-1">
+                  <span className="font-semibold text-lg">
+                    {donation.isAnonymous
+                      ? "Anonymous Donor"
+                      : donation.donorId?.name || "Supporter"}
+                  </span>
+                  <span className="text-gray-500 text-sm">
+                    Donated: <span className="font-bold text-primary">
+                      LKR {donation.amount?.toLocaleString()}
+                    </span>
+                  </span>
+                  <span className="mt-2 text-gray-700 italic break-words">
+                    {/* Only show if a message exists */}
+                    {donation.message
+                      ? `"${donation.message}"`
+                      : <span className="text-gray-400">No message</span>}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+
+
+
+
+
+
+
+
 
       {/* --------------- Related Campaign------------------ */}
       <div className=" flex flex-col items-center mt-20">

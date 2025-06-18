@@ -33,47 +33,15 @@ import treatment_image from "./treatment_image.png";
 import rehabilitation_image from "./rehabilitation_image.png";
 import diagnostics_testing_image from "./diagnostics&testing_image.png";
 import equipment_image from "./equipment_image.png";
-import potato_image_1 from "./potato_image_1.png";
-import potato_image_2 from "./potato_image_2.png";
-import potato_image_3 from "./potato_image_3.png";
-import potato_image_4 from "./potato_image_4.png";
-import tomato_image from "./tomato_image.png";
-import carrot_image from "./carrot_image.png";
-import apple_image from "./apple_image.png";
-import amul_milk_image from "./amul_milk_image.png";
-import coca_cola_image from "./coca_cola_image.png";
-import brown_bread_image from "./brown_bread_image.png";
-import basmati_rice_image from "./basmati_rice_image.png";
-import paneer_image from "./paneer_image.png";
-import orange_image from "./orange_image.png";
-import pepsi_image from "./pepsi_image.png";
-import wheat_flour_image from "./wheat_flour_image.png";
-import cheese_image from "./cheese_image.png";
-import eggs_image from "./eggs_image.png";
-import spinach_image_1 from "./spinach_image_1.png";
-import onion_image_1 from "./onion_image_1.png";
-import banana_image_1 from "./banana_image_1.png";
-import mango_image_1 from "./mango_image_1.png";
-import grapes_image_1 from "./grapes_image_1.png";
-import paneer_image_2 from "./paneer_image_2.png";
-import sprite_image_1 from "./sprite_image_1.png";
-import fanta_image_1 from "./fanta_image_1.png";
-import seven_up_image_1 from "./seven_up_image_1.png";
-import top_ramen_image from "./top_ramen_image.png";
-import knorr_soup_image from "./knorr_soup_image.png";
-import yippee_image from "./yippee_image.png";
-import maggi_oats_image from "./maggi_oats_image.png";
-import butter_croissant_image from "./butter_croissant_image.png";
-import chocolate_cake_image from "./chocolate_cake_image.png";
-import whole_wheat_bread_image from "./whole_wheat_bread_image.png";
-import vanilla_muffins_image from "./vanilla_muffins_image.png";
-import quinoa_image from "./quinoa_image.png";
-import brown_rice_image from "./brown_rice_image.png";
-import barley_image from "./barley_image.png";
 import ab_image1 from "./ab1.png";
 import ab_image2 from "./ab2.png";
 import ab_image3 from "./ab3.png";
 import banner_ab from "./banner_ab.png";
+import banner_ab_main from "./banner_ab_main.png";
+import banner_ab_1 from "./banner_ab_1.png";
+import banner_ab_2 from "./banner_ab_2.png";
+import banner_ab_3 from "./banner_ab_3.png";
+import banner_ab_4 from "./banner_ab_4.png";
 import patient_1 from "./patient_1.png";
 import patient_2 from "./patient_2.png";
 import favourite_icon from "./favourite_icon.svg";
@@ -112,6 +80,11 @@ export const assets = {
   ab_image3,
   box_icon,
   banner_ab,
+  banner_ab_main,
+  banner_ab_1,
+  banner_ab_2,
+  banner_ab_3,
+  banner_ab_4,
   patient_1,
   patient_2,
   favourite_icon,
