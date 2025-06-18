@@ -153,7 +153,7 @@ const CampaignDetails = () => {
             <p className="text-3xl font-medium">Supporters</p>
             <div className="w-20 h-0.5 bg-primary rounded-full mt-2"></div>
           </div>
-          <div className="mt-8 w-full max-w-2xl">
+          <div className="mt-8 w-full  grid grid-cols-1 md:grid-cols-2 gap-6">
             {donations.map((donation, idx) => (
               <div
                 key={donation._id || idx}
