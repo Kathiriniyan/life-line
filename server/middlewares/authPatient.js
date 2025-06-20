@@ -15,7 +15,7 @@ const authPatient = async (req, res, next) => {
         const tokenDecode = jwt.verify(token, process.env.JWT_SECRET);
 
         if (tokenDecode.id) {
-            req.patientId = tokenDecode.id; // Good: use req.patientId for patient routes
+            req.patientId = tokenDecode.id; 
             return next();
         } else {
             return res.status(401).json({ success: false, message: 'Not Authorized' });

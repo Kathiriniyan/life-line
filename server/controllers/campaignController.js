@@ -28,10 +28,9 @@ export const addCampaign = async (req, res) => {
 // Get Campaign : /api/campaign/list
 export const campaignList = async (req, res) => {
   try {
-    // Populate the address field
     const campaigns = await Campaign.find({})
-      .populate('address')   // <-- populate Address reference
-      .populate('account');  // <-- you can also populate account if you want
+      .populate('address')   
+      .populate('account');  
     res.json({ success: true, campaigns });
   } catch (error) {
     console.log(error.message);
@@ -57,10 +56,10 @@ export const campaignById = async (req, res)=>{
 // Get Campaigns by Patient ID : /api/campaign/patient
 export const campaignsByPatient = async (req, res) => {
   try {
-    const patientId = req.patientId; // comes from authPatient middleware
+    const patientId = req.patientId; 
     const campaigns = await Campaign.find({ patientId })
-      .populate('address')   // optional: populate address details
-      .populate('account');  // optional: populate account details
+      .populate('address')   
+      .populate('account');  
     res.json({ success: true, campaigns });
   } catch (error) {
     console.log(error.message);

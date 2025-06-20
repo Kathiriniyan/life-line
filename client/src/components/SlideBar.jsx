@@ -1,25 +1,27 @@
 import React from 'react'
+import { assets } from '../assets/assets';
 
 const SlideBar = () => {
     const [stopScroll, setStopScroll] = React.useState(false);
     const cardData = [
-        {
-            title: "Unlock Your Creative Flow",
-            image: "https://images.unsplash.com/photo-1543487945-139a97f387d5?w=1200&auto=format&fit=crop&q=60",
-        },
-        {
-            title: "Design Your Digital Future",
-            image: "https://images.unsplash.com/photo-1529254479751-faeedc59e78f?w=1200&auto=format&fit=crop&q=60",
-        },
-        {
-            title: "Build with Passion, Ship with Pride",
-            image: "https://images.unsplash.com/photo-1618327907215-4e514efabd41?w=1200&auto=format&fit=crop&q=60",
-        },
-        {
-            title: "Think Big, Code Smart",
-            image: "https://images.unsplash.com/photo-1583407723467-9b2d22504831?w=1200&auto=format&fit=crop&q=60",
-        },
-    ];
+  {
+    title: "Give Hope, Save Lives",
+    image: assets.s_1 ,
+  },
+  {
+    title: "Together We Heal",
+    image: assets.s_2,
+  },
+  {
+    title: "Your Gift, Their Tomorrow",
+    image: assets.s_3,
+  },
+  {
+    title: "Compassion in Action",
+    image: assets.s_4,
+  },
+];
+
   return (
         <>
             <style>{`

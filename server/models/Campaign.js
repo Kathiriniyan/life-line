@@ -12,8 +12,9 @@ const campaignSchema = new mongoose.Schema({
     endDate: { type: String, required: true },
     address: { type: String, required: true, ref: 'address' },
     account: { type: String, required: true, ref: 'account' },
-    isApprove: { type: Boolean, default: true },
-    isEmergency: { type: Boolean, default: true },
+    isApprove: { type: Boolean, default: false },
+    isEmergency: { type: Boolean, default: false },
+    isReject: { type: Boolean, default: false },
 }, { timestamps: true })
 
 const Campaign = mongoose.models.campaign || mongoose.model('campaign', campaignSchema)

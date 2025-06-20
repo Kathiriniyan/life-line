@@ -44,6 +44,10 @@ import banner_ab_3 from "./banner_ab_3.png";
 import banner_ab_4 from "./banner_ab_4.png";
 import patient_1 from "./patient_1.png";
 import patient_2 from "./patient_2.png";
+import s_1 from "./s_1.png";
+import s_2 from "./s_2.png";
+import s_3 from "./s_3.png";
+import s_4 from "./s_4.png";
 import favourite_icon from "./favourite_icon.svg";
 
 
@@ -87,6 +91,10 @@ export const assets = {
   banner_ab_4,
   patient_1,
   patient_2,
+  s_1,
+  s_2,
+  s_3,
+  s_4,
   favourite_icon,
 };
 

@@ -90,7 +90,7 @@ export const AppContextProvider = ({ children }) => {
     };
 
 
-    // Get Cart Item Count
+    
     const getCartCount = () => {
         let totalCount = 0;
         for (const item in cartItems) {
@@ -103,7 +103,7 @@ export const AppContextProvider = ({ children }) => {
         fetchPatients();
         fetchAdmin();
         fetchPatientAuth();
-        fetchCampaigns(); // << correct function!
+        fetchCampaigns(); 
     }, []);
 
     const value = {
@@ -111,7 +111,7 @@ export const AppContextProvider = ({ children }) => {
         showUserLogin, setShowUserLogin, campaigns, currency,
         cartItems, searchQuery, setSearchQuery, axios, fetchCampaigns,
         setCartItems, isAdmin, setIsAdmin, showPatientLogin, setShowPatientLogin,
-        patient, setPatient, getCartCount, fetchAdmin, patient, patients, setPatients, fetchPatients,donors,setDonors,fetchDonors
+        patient, setPatient, getCartCount, fetchAdmin, patients, setPatients, fetchPatients,donors,setDonors,fetchDonors
     };
 
     return <AppContext.Provider value={value}>{children}</AppContext.Provider>

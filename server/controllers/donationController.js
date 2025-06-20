@@ -46,11 +46,35 @@ export const allDonations = async (req, res) => {
 };
 
 // List patient/donor's donations (use donorId from JWT)
+// export const userDonations = async (req, res) => {
+//     try {
+//         const donorId = req.auth.donorId || req.userId;
+//         const donations = await Donation.find({ donorId })
+//             .populate('campaign', 'title');
+//         res.json({ success: true, donations });
+//     } catch (error) {
+//         res.json({ success: false, message: error.message });
+//     }
+// };
+
+
+
+// // controllers/donationController.js
 export const userDonations = async (req, res) => {
     try {
-        const donorId = req.donorId || req.userId;
+        
+        let donorId = null;
+        if (typeof req.auth === "function") {
+            const auth = req.auth();
+            donorId = auth && auth.userId;
+        }
+        donorId = donorId || req.donorId; 
+        if (!donorId) return res.json({ success: false, message: "Not authorized" });
+
         const donations = await Donation.find({ donorId })
-            .populate('campaign', 'title');
+            .populate('campaign', 'title image category')
+            .sort({ createdAt: -1 });
+
         res.json({ success: true, donations });
     } catch (error) {
         res.json({ success: false, message: error.message });
@@ -59,11 +83,17 @@ export const userDonations = async (req, res) => {
 
 
 
+
+
+
+
+
+
+
 // GET /api/donation/campaign/:campaignId
 export const campaignDonations = async (req, res) => {
   try {
     const { campaignId } = req.params;
-    // Populate donorId with name, email, image for each donation
     const donations = await Donation.find({ campaign: campaignId })
       .populate('donorId', 'name email image')
       .sort({ createdAt: -1 });
@@ -124,6 +154,7 @@ export const donationsByDonor = async (req, res) => {
     res.json({ success: false, message: error.message });
   }
 };
+
 
 
 

@@ -1,71 +1,72 @@
-import React, { useEffect, useState } from 'react'
-import { useAppContext } from '../context/AppContext'
-import { dummyOrders } from '../assets/assets'
-
+import React, { useEffect, useState } from 'react';
+import { useAppContext } from '../context/AppContext';
+import { useUser } from '@clerk/clerk-react';
 
 const MyDonation = () => {
+  const [donations, setDonations] = useState([]);
+  const { axios, currency = "LKR", navigate } = useAppContext();
+  const { user, isLoaded } = useUser();
 
-    const [myDonations, setMyDonations] = useState([])
-    const {currency, axios, user} = useAppContext()
-
-    const fetchMyDonations = async ()=>{
-        try {
-            const { data } = await axios.get('/api/order/user')
-            if(data.success){
-                setMyDonations(data.orders)
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    useEffect(()=>{
-        if(user){
-            fetchMyDonations()
-        }
-        
-    },[user])
+  useEffect(() => {
+    if (!isLoaded || !user) return; 
+    const fetchDonations = async () => {
+      try {
+        const { data } = await axios.get('/api/donation/mine');
+        if (data.success) setDonations(data.donations);
+        else setDonations([]);
+      } catch {
+        setDonations([]);
+      }
+    };
+    fetchDonations();
+  }, [isLoaded, user, axios]);
 
   return (
-    <div className='mt-16 pb-16'>
-        <div className='flex flex-col items-end w-max mb-8'>
-            <p className='text-2xl font-medium uppercase'>My Donation</p>
-            <div className='w-16 h-0.5 bg-primary rounded-full'></div>
-        </div>
-        {myDonations.map((order, index)=>(
-            <div key={index} className='border border-gray-300 rounded-lg mb-10 p-4 py-5 max-w-4xl'>
-                <p className='flex justify-between md:items-center text-gray-400 md:font-medium max-md:flex-col'>
-                    <span>Donatio Id : {order._id}</span>
-                    <span>Payment : {order.paymentType}</span>
-                    <span>Total Amount : {currency}{order.amount}</span>
-                </p>
-                {order.items.map((item, index)=>(
-                    <div key={index} className={`relative bg-white text-gray-500/70 ${order.items.length !== index + 1 && "border-b"} border-gray-300 flex flex-col md:flex-row md:items-center justify-between p-4 py-5 md:gap-16 w-full max-w-4xl`}>
-                        <div className='flex items-center mb-4 md:mb-0'>
-                            <div className='bg-primary/10 p-4 rounded-lg'>
-                                <img src={item.campaign.image[0]} alt="" className='w-16 h-16' />
-                            </div>
-                            <div className='ml-4'>
-                                <h2 className='text-xl font-medium text-gray-800'>{item.campaign.name}</h2>
-                                <p>Category: {item.campaign.category}</p>
-                            </div>
-                        </div>
+    <div className="mt-16 pb-16 max-w-4xl mx-auto">
+      <div className="flex flex-col items-end w-max mb-8">
+        <p className="text-2xl font-medium uppercase">My Donations</p>
+        <div className="w-16 h-0.5 bg-primary rounded-full"></div>
+      </div>
 
-                        <div className='flex flex-col justify-center md:ml-8 mb-4 md:mb-0'>
-                            <p>Quantity:{item.quantity || "1"}</p>
-                            <p>Status:{order.status}</p>
-                            <p>Date:{new Date(order.createdAt).toLocaleDateString()}</p>
-                        </div>
-                        <p className='text-primary text-lg font-medium'>
-                            Amount: {currency}{item.campaign.offerPrice * item.quantity}
-                        </p>
-                    </div>
-                ))}
+      {donations.length === 0 && (
+        <div className="text-center text-gray-400 text-lg mt-20">No donations yet.</div>
+      )}
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {donations.map((don, idx) => (
+          <div
+            key={don._id || idx}
+            className="bg-white border shadow rounded-xl p-5 flex flex-col gap-3"
+          >
+            <div
+              className="flex gap-4 cursor-pointer"
+              onClick={() => navigate(`/donate/${don.campaign._id}`)}
+            >
+              <img
+                src={don.campaign.image?.[0] || "/default-campaign.png"}
+                alt={don.campaign.title}
+                className="w-16 h-16 object-cover rounded-lg"
+              />
+              <div className="flex flex-col flex-1">
+                <div className="text-lg font-bold text-primary">{don.campaign.title}</div>
+                <div className="text-xs text-gray-500">Category: {don.campaign.category}</div>
+              </div>
             </div>
+            <div>
+              <span className="font-bold">{currency}{don.amount.toLocaleString()}</span>
+              <span className="text-xs ml-3 text-gray-400">{new Date(don.createdAt).toLocaleDateString()}</span>
+            </div>
+            <div className="italic text-gray-700 break-words">
+              {don.message ? `"${don.message}"` : <span className="text-gray-400">No message</span>}
+            </div>
+            {don.isAnonymous && (
+              <div className="text-xs text-yellow-700 mt-1">Donated as <b>Anonymous</b></div>
+            )}
+          </div>
         ))}
-        
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default MyDonation
+export default MyDonation;

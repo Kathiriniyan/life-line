@@ -18,8 +18,7 @@ const PatientLayout = () => {
     const sidebarLinks = [
         { name: "Overview", path: "/patient/overview", icon: assets.add_icon },
         { name: "Create Campaign", path: "/patient", icon: assets.add_icon },
-        { name: "Campaign List", path: "/patient/campaign-list", icon: assets.product_list_icon },
-        { name: "Orders", path: "/patient/orders", icon: assets.order_icon },
+        { name: "Donations", path: "/patient/donations", icon: assets.order_icon },
         { name: "Messages", path: "/patient/messages", icon: assets.order_icon },
     ];
 

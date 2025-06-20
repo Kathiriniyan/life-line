@@ -1,6 +1,6 @@
 import express from 'express';
 import { dashboardStats } from '../controllers/adminStatsController.js';
-import authAdmin from '../middlewares/authAdmin.js'; // Optional: only allow admin
+import authAdmin from '../middlewares/authAdmin.js'; 
 
 const adminStatsRouter = express.Router();
 

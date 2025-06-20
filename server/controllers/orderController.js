@@ -11,13 +11,13 @@ export const placeOrderCOD = async (req, res)=>{
         if(!address || items.length === 0){
             return res.json({success: false, message :"Invalide data"})
         }
-        //Calulate Amount Using Items
+        
         let amount = await items.reduce(async (acc, item)=>{
             const campaign = await Campaign.findById(item.campaign);
             return (await acc) + campaign.offerPrice * item.quantity;
         }, 0)
 
-        //Add Tax Charge(2%)
+        
         amount += Math.floor(amount * 0.02);
 
         await Order.create({
@@ -47,7 +47,7 @@ export const placeOrderStripe = async (req, res)=>{
         }
 
         let campaignData = [];
-        //Calulate Amount Using Items
+        
         let amount = await items.reduce(async (acc, item)=>{
             const campaign = await Campaign.findById(item.campaign);
             campaignData.push({
@@ -58,7 +58,7 @@ export const placeOrderStripe = async (req, res)=>{
             return (await acc) + campaign.offerPrice * item.quantity;
         }, 0)
 
-        //Add Tax Charge(2%)
+        
         amount += Math.floor(amount * 0.02);
 
         const order = await Order.create({

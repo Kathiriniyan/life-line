@@ -2,9 +2,9 @@ const NewsLetter = () => {
     
     return (
         <div className="flex flex-col items-center justify-center text-center space-y-2 mt-24 pb-14">
-            <h1 className="md:text-4xl text-2xl font-semibold">Never Miss a Deal!</h1>
+            <h1 className="md:text-4xl text-2xl font-semibold"> Stay Connected, save lives.!</h1>
             <p className="md:text-lg text-gray-500/70 pb-8">
-                Subscribe to get the latest offers, new arrivals, and exclusive discounts
+                Subscribe to receive updates on critical medical cases, success stories, and how your donations are making a real impact
             </p>
             <form className="flex items-center justify-between max-w-2xl w-full md:h-13 h-12">
                 <input

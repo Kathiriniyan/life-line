@@ -33,6 +33,7 @@ app.use(cookieParser());
 app.use(cors({origin: allowedOrigins, credentials: true}));
 app.use(clerkMiddleware())
 
+
 app.get('/',(req, res) => res.send("API is Working"));
 app.use('/api/inngest', serve({ client: inngest, functions }))
 app.use('/api/patient', patientRouter)

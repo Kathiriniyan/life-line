@@ -26,7 +26,7 @@ const Over_view = () => {
     if (campaigns.length === 0) return <div className="p-10 text-center">You haven’t created any campaigns yet.</div>;
 
     return (
-        <div className="flex-1 w-full max-w-full md:ml-10 md:mr-30">
+        <div className="no-scrollbar flex flex-1 w-full max-w-full md:ml-10 md:mr-30">
             <div className=" w-full mx-auto p-2 sm:p-4 md:py-8 md:px-6">
                 <h1 className="text-2xl md:text-3xl font-bold mb-4">Dashboard</h1>
                 {campaigns.map((campaign) => {
