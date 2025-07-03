@@ -1,25 +1,26 @@
-import React, { useEffect, useState } from 'react';
-import { useAppContext } from '../context/AppContext';
-import { useUser } from '@clerk/clerk-react';
+import React, { useEffect, useState } from 'react'
+import { useAppContext } from '../context/AppContext'
+import { useUser } from '@clerk/clerk-react'
 
 const MyDonation = () => {
-  const [donations, setDonations] = useState([]);
-  const { axios, currency = "LKR", navigate } = useAppContext();
-  const { user, isLoaded } = useUser();
+  const [donations, setDonations] = useState([])
+  const { axios, currency = "LKR", navigate } = useAppContext()
+  const { user, isLoaded, isSignedIn } = useUser()
+  const donorId = user?.id
 
   useEffect(() => {
-    if (!isLoaded || !user) return; 
+    if (!isLoaded || !isSignedIn || !donorId) return
     const fetchDonations = async () => {
       try {
-        const { data } = await axios.get('/api/donation/mine');
-        if (data.success) setDonations(data.donations);
-        else setDonations([]);
+        // Use the endpoint with donorId
+        const { data } = await axios.get(`/api/donation/donor/${donorId}`)
+        setDonations(data.success ? data.donations : [])
       } catch {
-        setDonations([]);
+        setDonations([])
       }
-    };
-    fetchDonations();
-  }, [isLoaded, user, axios]);
+    }
+    fetchDonations()
+  }, [isLoaded, isSignedIn, donorId, axios])
 
   return (
     <div className="mt-16 pb-16 max-w-4xl mx-auto">
@@ -27,11 +28,9 @@ const MyDonation = () => {
         <p className="text-2xl font-medium uppercase">My Donations</p>
         <div className="w-16 h-0.5 bg-primary rounded-full"></div>
       </div>
-
       {donations.length === 0 && (
         <div className="text-center text-gray-400 text-lg mt-20">No donations yet.</div>
       )}
-
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {donations.map((don, idx) => (
           <div
@@ -40,7 +39,7 @@ const MyDonation = () => {
           >
             <div
               className="flex gap-4 cursor-pointer"
-              onClick={() => navigate(`/donate/${don.campaign._id}`)}
+              onClick={() => navigate(`/donate/${don.campaign.category}/${don.campaign._id}`)}
             >
               <img
                 src={don.campaign.image?.[0] || "/default-campaign.png"}
@@ -53,7 +52,7 @@ const MyDonation = () => {
               </div>
             </div>
             <div>
-              <span className="font-bold">{currency}{don.amount.toLocaleString()}</span>
+              <span className="font-bold">{currency}{don.amount?.toLocaleString()}</span>
               <span className="text-xs ml-3 text-gray-400">{new Date(don.createdAt).toLocaleDateString()}</span>
             </div>
             <div className="italic text-gray-700 break-words">

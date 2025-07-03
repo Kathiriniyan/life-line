@@ -59,16 +59,16 @@ export const allDonations = async (req, res) => {
 
 
 
-// // controllers/donationController.js
+// controllers/donationController.js
 export const userDonations = async (req, res) => {
     try {
-        
         let donorId = null;
+        // Clerk v4+: req.auth() returns {userId,...}
         if (typeof req.auth === "function") {
             const auth = req.auth();
             donorId = auth && auth.userId;
         }
-        donorId = donorId || req.donorId; 
+        donorId = donorId || req.donorId; // fallback if you ever have legacy
         if (!donorId) return res.json({ success: false, message: "Not authorized" });
 
         const donations = await Donation.find({ donorId })
@@ -80,6 +80,7 @@ export const userDonations = async (req, res) => {
         res.json({ success: false, message: error.message });
     }
 };
+
 
 
 
