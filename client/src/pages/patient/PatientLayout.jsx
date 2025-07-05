@@ -19,7 +19,7 @@ const PatientLayout = () => {
         { name: "Overview", path: "/patient/overview", icon: assets.add_icon },
         { name: "Create Campaign", path: "/patient", icon: assets.add_icon },
         { name: "Donations", path: "/patient/donations", icon: assets.order_icon },
-        { name: "Messages", path: "/patient/messages", icon: assets.order_icon },
+        { name: "Request", path: "/patient/My-Request", icon: assets.order_icon },
     ];
 
 

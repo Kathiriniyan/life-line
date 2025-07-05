@@ -14,7 +14,6 @@ import PatientLogin from './components/patient/PatientLogin'
 import PatientLayout from './pages/patient/PatientLayout'
 import AddCampaign from './pages/patient/AddCampaign'
 import CampaignList from './pages/patient/CampaignList'
-import Order from './pages/patient/Order'
 import CampaignDetailPage from './pages/patient/CampaignDetailPage'
 import AdminLogin from './components/Admin/AdminLogin'
 import AdminLayout from './pages/admin/AdminLayout'
@@ -33,6 +32,7 @@ import PatientDetail from './pages/admin/patientDetail'
 import Payment from './pages/Payment'
 import DonorList from './pages/admin/DonorList'
 import DonorDetail from './pages/admin/DonorDetail'
+import MyRequest from './pages/patient/MyRequest.Jsx'
 
 const App = () => {
 
@@ -64,7 +64,7 @@ const App = () => {
             <Route path='add-bank' element={<AddBankAccount/>}/>
             <Route path='campaign-list' element={<CampaignList/>}/>
             <Route path='campaign-list/:id' element={<CampaignDetailPage/>}/>
-            <Route path='orders' element={<Order/>}/>
+            <Route path='My-Request' element={<MyRequest/>}/>
           </Route>
           <Route path='/admin' element={isAdmin ? <AdminLayout/> : <AdminLogin/>}>
             <Route index element={isAdminPath ? <Overview/> : null}/>

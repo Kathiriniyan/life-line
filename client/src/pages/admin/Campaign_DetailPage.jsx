@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useAppContext } from '../../context/AppContext';
 import { useParams } from 'react-router-dom';
-import toast from 'react-hot-toast'
+import toast from 'react-hot-toast';
 
 // Helper for days left
 function getDaysLeft(endDate) {
@@ -12,26 +12,26 @@ function getDaysLeft(endDate) {
 }
 
 const Campaign_DetailPage = () => {
-    const {campaigns, currency, axios, fetchCampaigns } = useAppContext()
-    const { id } = useParams()
+    const { campaigns, currency, axios, fetchCampaigns } = useAppContext();
+    const { id } = useParams();
     const [thumbnail, setThumbnail] = useState(null);
     const [progress, setProgress] = useState(0);
 
     const campaign = campaigns.find((item) => item._id === id);
 
-    const toggleApprove = async (id, isApprove)=>{
+    const toggleApprove = async (id, isApprove) => {
         try {
-            const { data } = await axios.post('/api/campaign/approve', {id, isApprove})
-            if(data.success){
+            const { data } = await axios.post('/api/campaign/approve', { id, isApprove });
+            if (data.success) {
                 fetchCampaigns();
-                toast.success(data.message)
-            }else{
-                toast.error(data.message)
+                toast.success(data.message);
+            } else {
+                toast.error(data.message);
             }
         } catch (error) {
-            toast.error(error.message)
+            toast.error(error.message);
         }
-    }
+    };
 
     const campaignProgress = campaign && campaign.goalAmount
         ? Math.min(campaign.collectedAmount / campaign.goalAmount, 1)
@@ -58,7 +58,7 @@ const Campaign_DetailPage = () => {
 
     return (
         <div className="flex justify-center mt-8 mb-16 px-2">
-            <div className="bg-white  rounded-xl w-5xl ml-8 max-w-5xl p-4 md:p-8">
+            <div className="bg-white rounded-xl w-5xl ml-8 max-w-5xl p-4 md:p-8">
                 <div className="flex flex-col md:flex-row gap-10">
                     <div className="flex gap-3">
                         <div className="flex flex-col gap-3">
@@ -77,12 +77,12 @@ const Campaign_DetailPage = () => {
                             <h1 className="text-3xl font-medium flex-1">{campaign.title}</h1>
                             <p className="text-xl font-medium text-red-500">Verify</p>
                             <label className="relative items-center cursor-pointer text-gray-900 gap-3">
-                                            <input onClick={()=>toggleApprove(campaign._id, !campaign.isApprove)} checked={campaign.isApprove} type="checkbox" className="sr-only peer" />
-                                            <div className="w-12 h-7 bg-slate-300 rounded-full peer peer-checked:bg-blue-600 transition-colors duration-200"></div>
-                                            <span className="dot absolute left-1 top-1 w-5 h-5 bg-white rounded-full transition-transform duration-200 ease-in-out peer-checked:translate-x-5"></span>
+                                <input onClick={() => toggleApprove(campaign._id, !campaign.isApprove)} checked={campaign.isApprove} type="checkbox" className="sr-only peer" readOnly />
+                                <div className="w-12 h-7 bg-slate-300 rounded-full peer peer-checked:bg-blue-600 transition-colors duration-200"></div>
+                                <span className="dot absolute left-1 top-1 w-5 h-5 bg-white rounded-full transition-transform duration-200 ease-in-out peer-checked:translate-x-5"></span>
                             </label>
                         </div>
-                        
+
                         <div className="mt-6">
                             {/* Progress Bar */}
                             <div className="flex items-center gap-2 mb-2">
@@ -121,6 +121,39 @@ const Campaign_DetailPage = () => {
                         ))}
                     </ul>
                 </div>
+
+                {/* ---- Patient Address & Bank Details Section ---- */}
+                <div className="mt-10 flex flex-col md:flex-row gap-12">
+                    {/* Address */}
+                    <div className="flex-1 border rounded-lg p-6 bg-gray-50">
+                        <div className="text-xl font-bold mb-3">Patient Address</div>
+                        {campaign.address ? (
+                            <ul className="text-gray-700 space-y-1">
+                                <li><span className="font-semibold">Street:</span> {campaign.address.street}</li>
+                                <li><span className="font-semibold">City:</span> {campaign.address.city}</li>
+                                <li><span className="font-semibold">Province:</span> {campaign.address.province}</li>
+                                <li><span className="font-semibold">Phone:</span> {campaign.address.phone}</li>
+                            </ul>
+                        ) : (
+                            <div className="text-gray-400">No address details</div>
+                        )}
+                    </div>
+                    {/* Bank Account */}
+                    <div className="flex-1 border rounded-lg p-6 bg-gray-50">
+                        <div className="text-xl font-bold mb-3">Bank Details</div>
+                        {campaign.account ? (
+                            <ul className="text-gray-700 space-y-1">
+                                <li><span className="font-semibold">Account Holder:</span> {campaign.account.fullName}</li>
+                                <li><span className="font-semibold">Bank:</span> {campaign.account.bankName}</li>
+                                <li><span className="font-semibold">Account Number:</span> {campaign.account.accNumber}</li>
+                                <li><span className="font-semibold">Branch:</span> {campaign.account.branch}</li>
+                            </ul>
+                        ) : (
+                            <div className="text-gray-400">No account details</div>
+                        )}
+                    </div>
+                </div>
+                {/* ---- End Patient Address & Bank Details ---- */}
             </div>
         </div>
     );
