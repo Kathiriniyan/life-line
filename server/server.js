@@ -15,6 +15,7 @@ import adminRouter from './routes/adminRoutes.js';
 import donationRouter from './routes/donationRouter.js';
 import donorRouter from './routes/donorRouter.js';
 import adminStatsRouter from './routes/adminStatsRouter.js';
+import DonationRequestRouter from './routes/DonationRequestRouter.js';
 
 
 
@@ -41,6 +42,7 @@ app.use('/api/address', addressRouter)
 app.use('/api/account', accountRouter)
 app.use('/api/campaign', campaignRouter)
 app.use('/api/donation', donationRouter)
+app.use('/api/donationrequest', DonationRequestRouter)
 app.use('/api/donor', donorRouter)
 app.use('/api/admin', adminRouter)
 app.use('/api/admin', adminStatsRouter);
