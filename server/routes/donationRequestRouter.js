@@ -1,12 +1,20 @@
 import express from 'express';
+
+import { cancelRequest, createRequest, listRequests, myRequests, rejectRequest, sendAmount } from '../controllers/DonationRequestControllers.js';
 import authPatient from '../middlewares/authPatient.js';
-import { cancelRequest, createRequest, getPatientRequests } from '../controllers/DonationRequestControllers.js';
+import authAdmin from '../middlewares/authAdmin.js';
 
 
 const DonationRequestRouter = express.Router();
 
-DonationRequestRouter.get('/my-requests', authPatient, getPatientRequests);     // All my withdrawal requests
-DonationRequestRouter.post('/add', authPatient, createRequest);                // New request
-DonationRequestRouter.post('/cancel', authPatient, cancelRequest);             // Cancel
+// Patient routes
+DonationRequestRouter.post('/add', authPatient, createRequest);
+DonationRequestRouter.get('/my-requests', authPatient, myRequests);
+
+// Admin routes
+DonationRequestRouter.get('/list', authAdmin, listRequests);
+DonationRequestRouter.post('/reject', authAdmin, rejectRequest);
+DonationRequestRouter.post('/send', authAdmin, sendAmount);
+DonationRequestRouter.post('/cancel', authAdmin, cancelRequest);
 
 export default DonationRequestRouter;
