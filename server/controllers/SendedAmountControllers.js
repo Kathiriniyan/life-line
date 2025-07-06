@@ -13,3 +13,14 @@ export const sendedAmountsByPatient = async (req, res) => {
     res.json({ success: false, message: e.message });
   }
 };
+
+
+
+export const sendedAmountsAll = async (req, res) => {
+  try {
+    const sended = await SendedAmount.find({});
+    res.json({ success: true, sended });
+  } catch (e) {
+    res.json({ success: false, message: e.message });
+  }
+};

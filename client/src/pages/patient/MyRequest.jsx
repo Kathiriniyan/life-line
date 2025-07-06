@@ -11,7 +11,7 @@ const MyRequest = () => {
   const [loading, setLoading] = useState(false);
   const [expanded, setExpanded] = useState({}); // {campaignId: true/false}
 
-  // Load requests and sended
+  // Load requests and sended payouts
   useEffect(() => {
     if (!patient) return;
     const load = async () => {
@@ -32,9 +32,10 @@ const MyRequest = () => {
   // All my campaigns
   const myCampaigns = campaigns.filter(c => c.patientId === patient?._id);
 
-  // Get actual collected - sended
-  const getActualBalance = (campaignId, collectedAmount) => {
-    const totalSent = sended.filter(s => s.campaign === campaignId)
+  // Calculate Outstanding (current) for a campaign
+  const getOutstanding = (campaignId, collectedAmount) => {
+    const totalSent = sended
+      .filter(s => s.campaign === campaignId)
       .reduce((sum, s) => sum + s.amount, 0);
     return collectedAmount - totalSent;
   };
@@ -43,33 +44,33 @@ const MyRequest = () => {
   const requestsFor = campaignId =>
     requests.filter(r => r.campaign._id === campaignId).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
-  // All sent for a campaign
+  // All payouts sent for a campaign
   const sentFor = campaignId =>
     sended.filter(s => s.campaign === campaignId);
 
-  // Is there a pending request?
+  // Pending request?
   const getCurrentPendingRequest = campaignId =>
     requests.find(r => r.campaign._id === campaignId && r.status === "Pending");
 
-  // Expand/collapse
+  // Expand/collapse details
   const toggleExpand = campaignId => setExpanded(e => ({ ...e, [campaignId]: !e[campaignId] }));
 
-  // Open form
-  const openRequestForm = (campaign, maxAmount) => {
+  // Open request form
+  const openRequestForm = (campaign, outstanding) => {
     setForm({
       campaignId: campaign._id,
       amount: '',
       message: '',
-      maxAmount
+      maxAmount: outstanding
     });
     setShowForm(true);
   };
 
-  // Submit request
+  // Submit payout request
   const submitRequest = async (e) => {
     e.preventDefault();
     if (Number(form.amount) > Number(form.maxAmount)) {
-      toast.error('Amount exceeds current available balance');
+      toast.error('Amount exceeds current outstanding balance');
       return;
     }
     setLoading(true);
@@ -82,7 +83,7 @@ const MyRequest = () => {
       if (data.success) {
         toast.success('Request submitted');
         setShowForm(false);
-        // Reload requests & sended
+        // Reload requests
         const reqRes = await axios.get('/api/donation-request/my-requests');
         setRequests(reqRes.data.requests || []);
       } else {
@@ -94,7 +95,7 @@ const MyRequest = () => {
     setLoading(false);
   };
 
-  // Cancel request
+  // Cancel pending request
   const cancelRequest = async (id) => {
     setLoading(true);
     try {
@@ -119,7 +120,7 @@ const MyRequest = () => {
         )}
         {myCampaigns.map(campaign => {
           const pending = getCurrentPendingRequest(campaign._id);
-          const balance = getActualBalance(campaign._id, campaign.collectedAmount);
+          const outstanding = getOutstanding(campaign._id, campaign.collectedAmount);
           const allRequests = requestsFor(campaign._id);
           return (
             <div key={campaign._id} className="border rounded-xl p-6 bg-white shadow">
@@ -130,7 +131,7 @@ const MyRequest = () => {
                     <div>
                       <div className="font-bold text-lg">{campaign.title}</div>
                       <div className="text-gray-500 text-sm mb-1">
-                        <b>Available:</b> LKR {balance.toLocaleString()} &nbsp;
+                        <b>Outstanding:</b> LKR {outstanding.toLocaleString()} &nbsp;
                         <b>Goal:</b> LKR {campaign.goalAmount?.toLocaleString()}
                       </div>
                     </div>
@@ -143,9 +144,9 @@ const MyRequest = () => {
                   </div>
                   {!pending ? (
                     <button
-                      onClick={() => openRequestForm(campaign, balance)}
+                      onClick={() => openRequestForm(campaign, outstanding)}
                       className="bg-primary px-4 py-2 text-white rounded hover:bg-primary-dull transition mt-4"
-                      disabled={balance < 1}
+                      disabled={outstanding < 1}
                     >
                       Request Amount
                     </button>
@@ -162,7 +163,7 @@ const MyRequest = () => {
                       </button>
                     </div>
                   )}
-                  {/* Payout Request History */}
+                  {/* Show more: Request & Payout History */}
                   {expanded[campaign._id] && (
                     <div className="mt-5 w-full border-t pt-4">
                       <h4 className="text-md font-semibold mb-2">Request History</h4>
@@ -173,7 +174,7 @@ const MyRequest = () => {
                           {allRequests.map(r => (
                             <li key={r._id} className="border-b pb-2">
                               <div>
-                                <b>{r.status}</b>: LKR {r.amount} 
+                                <b>{r.status}</b>: LKR {r.amount}
                                 <span className="text-xs text-gray-400 ml-2">{new Date(r.createdAt).toLocaleDateString()}</span>
                               </div>
                               <div>
@@ -204,11 +205,14 @@ const MyRequest = () => {
                             <li key={sa._id} className="text-green-700 text-xs flex flex-col">
                               <span>Amount Sent: LKR {sa.amount} </span>
                               <span className="text-gray-400">on {new Date(sa.createdAt).toLocaleDateString()}</span>
-                              <span className="text-gray-500">Outstanding: LKR {sa.pendingAmount}</span>
                             </li>
                           ))}
                         </ul>
                       )}
+                      {/* Outstanding at the bottom, always recomputed */}
+                      <div className="mt-4 text-sm font-bold text-blue-700">
+                        Outstanding: LKR {getOutstanding(campaign._id, campaign.collectedAmount).toLocaleString()}
+                      </div>
                     </div>
                   )}
                 </div>

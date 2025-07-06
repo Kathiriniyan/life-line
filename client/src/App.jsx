@@ -33,6 +33,7 @@ import Payment from './pages/Payment'
 import DonorList from './pages/admin/DonorList'
 import DonorDetail from './pages/admin/DonorDetail'
 import MyRequest from './pages/patient/MyRequest.Jsx'
+import DonationHistory from './pages/admin/DonationHistory'
 
 const App = () => {
 
@@ -77,6 +78,7 @@ const App = () => {
             <Route path='patient-details/:id' element={<PatientDetail/>}/>
             <Route path='donar-details' element={<DonorList/>}/>
             <Route path="donor-details/:id" element={<DonorDetail />} />
+            <Route path="donations-history" element={<DonationHistory />} />
           </Route>
           
         </Routes>
