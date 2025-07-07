@@ -85,20 +85,23 @@ export const dashboardStats = async (req, res) => {
       .populate('patientId', 'name');
 
     // Merge and sort by date for activities
-    const recentActivities = [
-      ...recentDonations.map(d => ({
-        user: d.donorId?.name || "Donor",
-        action: "Donated",
-        campaign: d.campaign?.title || "",
-        date: dayjs(d.createdAt).format("YYYY-MM-DD"),
-      })),
-      ...recentCampaigns.map(c => ({
-        user: c.patientId?.name || "Patient",
-        action: "Created Campaign",
-        campaign: c.title,
-        date: dayjs(c.createdAt).format("YYYY-MM-DD"),
-      }))
-    ].sort((a, b) => dayjs(b.date).valueOf() - dayjs(a.date).valueOf()).slice(0, 10);
+const recentActivities = [
+  ...recentDonations.map(d => ({
+    user: d.donorId?.name || "Donor",
+    action: "Donated",
+    campaign: d.campaign?.title || "",
+    date: dayjs(d.createdAt).format("YYYY-MM-DD"),
+    role: "Donor"
+  })),
+  ...recentCampaigns.map(c => ({
+    user: c.patientId?.name || "Patient",
+    action: "Created Campaign",
+    campaign: c.title,
+    date: dayjs(c.createdAt).format("YYYY-MM-DD"),
+    role: "Patient"
+  }))
+].sort((a, b) => dayjs(b.date).valueOf() - dayjs(a.date).valueOf()).slice(0, 10);
+
 
     // Send all stats
     res.json({

@@ -34,6 +34,7 @@ import DonorList from './pages/admin/DonorList'
 import DonorDetail from './pages/admin/DonorDetail'
 import MyRequest from './pages/patient/MyRequest.Jsx'
 import DonationHistory from './pages/admin/DonationHistory'
+import CampaignDonations from './pages/patient/CampaignDonations'
 
 const App = () => {
 
@@ -65,6 +66,7 @@ const App = () => {
             <Route path='add-bank' element={<AddBankAccount/>}/>
             <Route path='campaign-list' element={<CampaignList/>}/>
             <Route path='campaign-list/:id' element={<CampaignDetailPage/>}/>
+            <Route path='donations' element={<CampaignDonations/>}/>
             <Route path='My-Request' element={<MyRequest/>}/>
           </Route>
           <Route path='/admin' element={isAdmin ? <AdminLayout/> : <AdminLogin/>}>

@@ -3,6 +3,7 @@ import { upload } from '../configs/multer.js';
 import authAdmin from '../middlewares/authAdmin.js';
 import { addCampaign, campaignById, campaignList, campaignsByPatient, campaignsByPatientId, changeApprove, changeEmergency } from '../controllers/campaignController.js';
 import authPatient from '../middlewares/authPatient.js';
+import { patientCampaignOverview } from '../controllers/patientCampaignOverview.js';
 
 const campaignRouter = express.Router();
 
@@ -13,6 +14,7 @@ campaignRouter.get('/by-patient', authPatient, campaignsByPatient);
 campaignRouter.post('/approve', authAdmin, changeApprove )
 campaignRouter.post('/emergency', authAdmin, changeEmergency )
 
+campaignRouter.get('/overview', authPatient, patientCampaignOverview);
 campaignRouter.get('/by-patient', authPatient, campaignsByPatient); // For logged-in patient
 campaignRouter.get('/by-patient/:id', campaignsByPatientId);          // For admin, by patient ID
 
