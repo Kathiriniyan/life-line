@@ -29,7 +29,7 @@ const AddCampaign = () => {
                 category,
                 goalAmount,
                 endDate,
-                address: selectedAddress?._id,   // <-- add this if needed
+                address: selectedAddress?._id,   
                 account: selectedAccount?._id
             }
 
@@ -78,8 +78,8 @@ const AddCampaign = () => {
     try {
         const { data } = await axios.get('/api/account/get');
         if(data.success){
-            setAccount(data.accounts)         // <-- Use "accounts"
-            if(data.accounts.length > 0){     // <-- Use "accounts"
+            setAccount(data.accounts)         
+            if(data.accounts.length > 0){     
                 setSelectedAccount(data.accounts[0])
             }
         }else{

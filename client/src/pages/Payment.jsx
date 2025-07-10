@@ -27,13 +27,13 @@ const Payment = () => {
   const [message, setMessage] = useState('');
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [isPaying, setIsPaying] = useState(false);
-  const { user } = useUser(); // Clerk's useUser
-const donorId = user?.id;   // Or user?.primaryEmailAddress?.emailAddress, etc
+  const { user } = useUser(); 
+const donorId = user?.id;   
 
-  // Only allow logged-in users to donate
-  const canDonate = !!patient; // adjust if you have donor login
+ 
+  const canDonate = !!patient; 
 
-  // Handle Pay Button
+  
   const handleDonate = async (e) => {
     e.preventDefault();
     if (!canDonate) {
@@ -49,12 +49,11 @@ const donorId = user?.id;   // Or user?.primaryEmailAddress?.emailAddress, etc
       return;
     }
     setIsPaying(true);
-    // "Process" payment (simulate only)
+    
     try {
-      // Submit donation to backend (simulate payment gateway for now)
       const { data } = await axios.post('/api/donation/add', {
   campaignId: campaign._id,
-  donorId, // Pass donorId from Clerk if you have
+  donorId, 
   amount: Number(amount),
   message,
   isAnonymous,
@@ -76,7 +75,7 @@ const donorId = user?.id;   // Or user?.primaryEmailAddress?.emailAddress, etc
 
   return (
     <div className="flex flex-col md:flex-row gap-8 p-4 md:p-10 items-start min-h-screen">
-      {/* LEFT: Campaign Cart */}
+      
       <div className="flex-1 max-w-lg w-full bg-white shadow-xl rounded-xl p-6 mb-6 md:mb-0">
         <h2 className="text-lg font-bold mb-4 text-primary">Campaign Details</h2>
         <img src={campaign.image?.[0]} alt={campaign.title} className="w-full h-52 object-cover rounded-lg mb-4" />
@@ -98,7 +97,7 @@ const donorId = user?.id;   // Or user?.primaryEmailAddress?.emailAddress, etc
         </div>
       </div>
 
-      {/* RIGHT: Payment Form */}
+      
       <form
         onSubmit={handleDonate}
         className="flex-1 max-w-lg w-full bg-white shadow-xl rounded-xl p-8 flex flex-col gap-4"

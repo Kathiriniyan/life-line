@@ -16,7 +16,7 @@ const AdminLogin = () => {
             if (data.success) {
                 setIsAdmin(true);
                 toast.success('Login successful!');
-                fetchAdmin(); // Always sync with backend
+                fetchAdmin(); 
                 navigate('/admin');
             } else {
                 setIsAdmin(false);

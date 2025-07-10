@@ -9,12 +9,12 @@ const AdminLayout = () => {
   const [openDropdown, setOpenDropdown] = useState(null);
 
   const sidebarLinks = [
-    { name: "Overview", path: "/admin", icon: assets.add_icon },
+    { name: "Overview", path: "/admin", icon: assets.overview },
     { name: "Campaign List", path: "/admin/campaign-list", icon: assets.product_list_icon },
-    { name: "Campaign History", path: "/admin/campaign-history", icon: assets.product_list_icon },
+    { name: "Campaign History", path: "/admin/campaign-history", icon: assets.history },
     {
       name: "Users",
-      icon: assets.order_icon,
+      icon: assets.user,
       children: [
         { name: "Patient", path: "/admin/patient-details" },
         { name: "Donar", path: "/admin/donar-details" }
@@ -22,13 +22,13 @@ const AdminLayout = () => {
     },
     {
       name: "Request",
-      icon: assets.order_icon,
+      icon: assets.request,
       children: [
         { name: "Campaign Request", path: "/admin/campaign-approve" },
         { name: "Patient Request", path: "/admin/patient-request" }
       ]
     },
-    { name: "Donations", path: "/admin/donations-history", icon: assets.order_icon },
+    { name: "Donations", path: "/admin/donations-history", icon: assets.donate },
   ];
 
   const logout = async () => {
@@ -37,7 +37,7 @@ const AdminLayout = () => {
         if (data.success) {
             setIsAdmin(false);
             toast.success(data.message);
-            navigate('/'); // or navigate('/admin') to go to login
+            navigate('/'); 
         } else {
             toast.error(data.message);
         }

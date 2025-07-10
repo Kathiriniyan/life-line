@@ -12,19 +12,19 @@ const PatientRequest = () => {
   const [date, setDate] = useState('')
   const [filterStatus, setFilterStatus] = useState('Sended')
 
-  // Fetch all requests and all sended amounts
+  
   useEffect(() => {
     const fetchData = async () => {
       const reqRes = await axios.get('/api/donation-request/list')
       setRequests(reqRes.data.success ? reqRes.data.requests : [])
-      // You need an endpoint for ALL sended amounts (not /my, which is per patient!)
+      
       const senRes = await axios.get('/api/sended-amount/all')
       setSended(senRes.data.success ? senRes.data.sended : [])
     }
     fetchData()
   }, [])
 
-  // Map: campaignId -> { totalSent, outstanding }
+  
   const sentSummaryByCampaign = {}
   sended.forEach(item => {
     if (!sentSummaryByCampaign[item.campaign]) {
@@ -33,7 +33,7 @@ const PatientRequest = () => {
     sentSummaryByCampaign[item.campaign].totalSent += item.amount
   })
 
-  // All campaigns from requests
+  
   const campaigns = Object.values(requests.reduce((acc, req) => {
     if (req.campaign && req.campaign._id) {
       acc[req.campaign._id] = req.campaign
@@ -41,20 +41,20 @@ const PatientRequest = () => {
     return acc
   }, {}))
 
-  // Filtering campaigns for the table
+  
   const filteredCampaigns = campaigns.filter(c => {
     const campaignRequests = requests.filter(r => r.campaign._id === c._id)
-    // Search filter
+    
     if (search && !c.title.toLowerCase().includes(search.toLowerCase())) return false
-    // Date filter
+    
     if (date && !campaignRequests.some(r => r.createdAt.startsWith(date))) return false
-    // Status filter
+    
     if (filterStatus === 'Rejected' && !campaignRequests.some(r => r.status === 'Rejected')) return false
     if (filterStatus === 'Sended' && !campaignRequests.some(r => r.status === 'Sended')) return false
     return true
   })
 
-  // --- Handlers ---
+  
   const handleReject = async (id) => {
     const adminReply = prompt("Enter reason for rejection:")
     if (!adminReply) return
@@ -73,7 +73,7 @@ const PatientRequest = () => {
     } else toast.error(data.message)
   }
 
-  // --- Pending Requests Section ---
+ 
   const pendingRequests = requests.filter(r => r.status === 'Pending')
 
   return (
@@ -140,7 +140,6 @@ const PatientRequest = () => {
             <div className="text-gray-400">No matching campaigns.</div>
           )}
           {filteredCampaigns.map(campaign => {
-            // Filtered requests for this campaign (by status/date)
             const relatedRequests = requests.filter(r =>
               r.campaign._id === campaign._id &&
               (filterStatus ? r.status === filterStatus : true) &&

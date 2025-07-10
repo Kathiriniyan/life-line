@@ -41,7 +41,7 @@ const steps = [
 const BlogBanner = () => {
   const [hoveredStep, setHoveredStep] = useState(null);
 
-  // mobile: only banner_ab.png
+  
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
 
   return (
@@ -73,7 +73,7 @@ const BlogBanner = () => {
               <p className="text-gray-700 mb-2">{steps[hoveredStep].desc}</p>
               <hr className="my-2 border-gray-200" />
               <div className="flex items-start gap-2">
-                {/* Your secure icon here */}
+                
                 <span>
                   <svg width="22" height="22" fill="none" stroke="#222" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zm0 13l-10-5v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-10 5z" fill="#111" /></svg>
                 </span>

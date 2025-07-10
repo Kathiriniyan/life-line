@@ -3,7 +3,7 @@ import { useAppContext } from '../../context/AppContext';
 import { useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
-// Helper for days left
+
 function getDaysLeft(endDate) {
     const now = new Date();
     const end = new Date(endDate);

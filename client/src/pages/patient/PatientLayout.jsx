@@ -16,17 +16,17 @@ const PatientLayout = () => {
    }
 
     const sidebarLinks = [
-        { name: "Overview", path: "/patient/overview", icon: assets.add_icon },
+        { name: "Overview", path: "/patient/overview", icon: assets.overview },
         { name: "Create Campaign", path: "/patient", icon: assets.add_icon },
-        { name: "Donations", path: "/patient/donations", icon: assets.order_icon },
-        { name: "Request", path: "/patient/My-Request", icon: assets.order_icon },
+        { name: "Donations", path: "/patient/donations", icon: assets.donate },
+        { name: "Request", path: "/patient/My-Request", icon: assets.request },
     ];
 
 
 const logout = async ()=>{
     try {
         const { data } = await axios.get('/api/patient/logout');
-        // Always clear patient state, regardless of server response!
+        
         setIsPatient(false);
         setPatient(null);
         if(data.success){
@@ -36,7 +36,7 @@ const logout = async ()=>{
             toast.error(data.message)
         }
     } catch (error) {
-        setIsPatient(false);  // <<-- Make sure local state is cleared on error, too!
+        setIsPatient(false);  
         setPatient(null);
         toast.success("Logged out");
         navigate('/');

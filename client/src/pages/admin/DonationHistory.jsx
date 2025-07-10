@@ -3,7 +3,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useAppContext } from "../../context/AppContext";
 
-// Helper to compare date for "ended"
+
 const isCampaignClosed = (endDate) => {
   return new Date(endDate) < new Date();
 };
@@ -13,17 +13,17 @@ const DonationHistory = () => {
   const [campaigns, setCampaigns] = useState([]);
   const [requests, setRequests] = useState([]);
   const [sended, setSended] = useState([]);
-  const [donations, setDonations] = useState({}); // campaignId -> [donations]
+  const [donations, setDonations] = useState({}); 
   const [selectedCampaign, setSelectedCampaign] = useState(null);
   const [search, setSearch] = useState("");
-  const [filterClosed, setFilterClosed] = useState(""); // 'closed' | 'ongoing' | ''
+  const [filterClosed, setFilterClosed] = useState(""); 
   const [loading, setLoading] = useState(false);
 
-  // Load all data
+  
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      // Campaigns, Requests, SendedAmounts
+      
       const [cRes, rRes, sRes] = await Promise.all([
         axios.get("/api/campaign/list"),
         axios.get("/api/donation-request/list"),
@@ -37,9 +37,9 @@ const DonationHistory = () => {
     fetchData();
   }, []);
 
-  // Fetch all donations for a campaign on-demand
+  
   const loadDonations = async (campaignId) => {
-    if (donations[campaignId]) return; // Already loaded
+    if (donations[campaignId]) return; 
     try {
       const { data } = await axios.get(`/api/donation/campaign/${campaignId}`);
       setDonations((d) => ({ ...d, [campaignId]: data.success ? data.donations : [] }));
@@ -48,7 +48,7 @@ const DonationHistory = () => {
     }
   };
 
-  // Outstanding: collected - total sent
+  
   const getOutstanding = (c) => {
     const totalSent = sended
       .filter((s) => s.campaign === c._id)
@@ -56,9 +56,9 @@ const DonationHistory = () => {
     return c.collectedAmount - totalSent;
   };
 
-  // Sended status: Amounts "will be credited soon"
+  
   const getAmountWillBeCredited = (c) => {
-    // All Sended requests not yet credited
+    
     const creditedIds = new Set(
       sended.filter((s) => s.campaign === c._id).map((s) => String(s.donationRequestId))
     );
@@ -67,7 +67,7 @@ const DonationHistory = () => {
       .reduce((sum, r) => sum + r.amount, 0);
   };
 
-  // Filter campaigns
+  
   const filteredCampaigns = campaigns.filter((c) => {
     if (search && !c.title.toLowerCase().includes(search.toLowerCase())) return false;
     if (filterClosed === "closed" && !isCampaignClosed(c.endDate)) return false;
@@ -75,17 +75,16 @@ const DonationHistory = () => {
     return true;
   });
 
-  // Send amount credited (simulate API)
+  
   const handleCredit = async (campaign) => {
-    // You would call a backend endpoint to mark all uncredited Sendeds as "Credited"
+    
     toast.success("All pending payouts for this campaign marked as credited!");
-    // Reload sended/requests if you want live updates here
+    
   };
 
   return (
     <div className="p-8 w-full max-w-6xl mx-auto">
       <h2 className="text-2xl font-bold mb-6">All Campaigns Donation History</h2>
-      {/* Campaign Detail Card (when selected) */}
       {selectedCampaign && (
         <div className="bg-white shadow-lg rounded-xl p-6 mb-8">
           <div className="flex gap-6">
@@ -140,7 +139,6 @@ const DonationHistory = () => {
               </div>
             </div>
           </div>
-          {/* Donations Table */}
           <div className="mt-6">
             <h3 className="font-semibold mb-2 text-lg">Donations</h3>
             <button

@@ -3,9 +3,8 @@ import toast from 'react-hot-toast'
 import { useAppContext } from '../../context/AppContext';
 
 const PatientLogin = () => {
-    // NOTE: Add setPatient to your AppContext if you want to store patient info.
     const { isPatient, setShowPatientLogin, setPatient, axios, navigate, setIsPatient } = useAppContext();
-    const [mode, setMode] = useState("login"); // "login" or "register"
+    const [mode, setMode] = useState("login"); 
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");

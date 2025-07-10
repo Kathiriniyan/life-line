@@ -28,13 +28,13 @@ import CampaignRequest from './pages/admin/CampaignRequest'
 import PatientRequest from './pages/admin/PatientRequest'
 import CampaignHistory from './pages/admin/CampaignHistory'
 import PatientList from './pages/admin/PatientList'
-import PatientDetail from './pages/admin/patientDetail'
 import Payment from './pages/Payment'
 import DonorList from './pages/admin/DonorList'
 import DonorDetail from './pages/admin/DonorDetail'
 import MyRequest from './pages/patient/MyRequest.Jsx'
 import DonationHistory from './pages/admin/DonationHistory'
 import CampaignDonations from './pages/patient/CampaignDonations'
+import PatientDetail from './pages/admin/PatientDetail'
 
 const App = () => {
 
@@ -64,8 +64,7 @@ const App = () => {
             <Route path='overview' element={<Over_view/>}/>
             <Route path='add-address' element={<Add_Address/>}/>
             <Route path='add-bank' element={<AddBankAccount/>}/>
-            <Route path='campaign-list' element={<CampaignList/>}/>
-            <Route path='campaign-list/:id' element={<CampaignDetailPage/>}/>
+            <Route path='My-Campaign/:id' element={<CampaignDetailPage/>}/>
             <Route path='donations' element={<CampaignDonations/>}/>
             <Route path='My-Request' element={<MyRequest/>}/>
           </Route>

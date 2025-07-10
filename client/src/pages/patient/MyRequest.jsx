@@ -9,9 +9,9 @@ const MyRequest = () => {
   const [requests, setRequests] = useState([]);
   const [sended, setSended] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [expanded, setExpanded] = useState({}); // {campaignId: true/false}
+  const [expanded, setExpanded] = useState({}); 
 
-  // Load requests and sended payouts
+  
   useEffect(() => {
     if (!patient) return;
     const load = async () => {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useAppContext } from "../../context/AppContext";
-import { categories } from "../../assets/assets"; // Update path as needed!
+import { categories } from "../../assets/assets"; 
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 
 export default function Overview() {
@@ -14,7 +14,7 @@ export default function Overview() {
         const { data } = await axios.get('/api/admin/dashboard-stats');
         if (data.success) setStats(data.stats);
       } catch (e) {
-        // handle error
+        
       }
       setLoading(false);
     };
@@ -25,7 +25,7 @@ export default function Overview() {
     return <div className="p-10 text-center text-xl text-gray-400">Loading dashboard...</div>;
   }
 
-  // Calculate max amount for bar scaling
+  
   const maxAmount = Math.max(
     ...categories.map(cat => {
       const entry = stats.donationsByCategory?.find(x => x.category === cat.path);
@@ -77,7 +77,7 @@ export default function Overview() {
                     className="w-7 rounded transition-all"
                     style={{
                       height: `${barHeight}px`,
-                      background: cat.bgColor || "#E5E7EB", // fallback color
+                      background: cat.bgColor || "#E5E7EB", 
                     }}
                     title={entry.amount.toLocaleString()}
                   />

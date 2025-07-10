@@ -7,13 +7,13 @@ import { useClerk, UserButton, useUser } from '@clerk/clerk-react'
 import { TicketPlus } from 'lucide-react'
 
 const Navbar = () => {
-    const { user, isSignedIn } = useUser();      // Clerk donor
+    const { user, isSignedIn } = useUser();      
     const { openSignIn } = useClerk();
     const { navigate, setSearchQuery, searchQuery } = useAppContext();
 
     const [open, setOpen] = useState(false);
 
-    // Search triggers
+    
     useEffect(() => {
         if (searchQuery.length > 0) {
             navigate("/donate");
@@ -103,7 +103,7 @@ const Navbar = () => {
                         <button
                             onClick={() => {
                                 setOpen(false);
-                                window.Clerk?.signOut?.(); // Clerk logout
+                                window.Clerk?.signOut?.(); 
                             }}
                             className="cursor-pointer px-6 py-2 mt-2 bg-primary hover:bg-primary-dull transition text-white rounded-full text-sm"
                         >

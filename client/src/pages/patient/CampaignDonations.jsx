@@ -61,13 +61,14 @@ const CampaignDonations = () => {
           );
           const campaignDonations = donations[campaign._id] || [];
           return (
-            <div onClick={()=> {navigate(`patient/campaign-list/${campaign._id}`); scrollTo(0,0)}} 
+            <div 
+            //onClick={()=> {navigate(`patient/campaign-list/${campaign._id}`); scrollTo(0,0)}} 
               key={campaign._id}
               className="border border-primary/30 p-8 rounded-xl shadow-xl mb-8 bg-white"
             >
               <div className="flex flex-col md:flex-row md:items-center gap-6">
-                <div className="flex-1">
-                  <h3 className="font-semibold text-lg mb-1">{campaign.title}</h3>
+                <div className="flex-1" >
+                  <h3 onClick={()=> {navigate(`patient/My-Campaign/${campaign._id}`); scrollTo(0,0)}} key={campaign._id} className="font-semibold text-lg mb-1 cursor-pointer ">{campaign.title}</h3>
                   <p className="text-gray-500 text-sm mb-2">{campaign.description?.[0]}</p>
                   <div className="text-sm mb-2">
                     <span className="mr-2">

@@ -48,6 +48,11 @@ import s_1 from "./s_1.png";
 import s_2 from "./s_2.png";
 import s_3 from "./s_3.png";
 import s_4 from "./s_4.png";
+import donate from "./donate.png";
+import history from "./history.png";
+import overview from "./overview.png";
+import request from "./request.png";
+import user from "./user.png";
 import favourite_icon from "./favourite_icon.svg";
 
 
@@ -95,6 +100,11 @@ export const assets = {
   s_2,
   s_3,
   s_4,
+  donate,
+  history,
+  overview,
+  request,
+  user,
   favourite_icon,
 };
 
@@ -148,19 +158,19 @@ export const footerLinks = [
     title: "Quick Links",
     links: [
       { text: "Home", url: "#" },
-      { text: "Best Sellers", url: "#" },
-      { text: "Offers & Deals", url: "#" },
+      { text: "Donate", url: "#" },
+      { text: "About", url: "#" },
       { text: "Contact Us", url: "#" },
-      { text: "FAQs", url: "#" },
+      { text: "Create Campaign", url: "#" },
     ],
   },
   {
     title: "Need help?",
     links: [
-      { text: "Delivery Information", url: "#" },
-      { text: "Return & Refund Policy", url: "#" },
+      { text: "Campaign Information", url: "#" },
+      { text: "Refund Policy", url: "#" },
       { text: "Payment Methods", url: "#" },
-      { text: "Track your Order", url: "#" },
+      { text: "Track your Donations", url: "#" },
       { text: "Contact Us", url: "#" },
     ],
   },
