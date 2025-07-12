@@ -1,5 +1,3 @@
-
-
 import express from 'express';
 import { adminLogin, adminLogout, isAdminAuth } from '../controllers/adminController.js';
 import authAdmin from '../middlewares/authAdmin.js';

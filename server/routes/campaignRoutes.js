@@ -15,8 +15,8 @@ campaignRouter.post('/approve', authAdmin, changeApprove )
 campaignRouter.post('/emergency', authAdmin, changeEmergency )
 
 campaignRouter.get('/overview', authPatient, patientCampaignOverview);
-campaignRouter.get('/by-patient', authPatient, campaignsByPatient); // For logged-in patient
-campaignRouter.get('/by-patient/:id', campaignsByPatientId);          // For admin, by patient ID
+campaignRouter.get('/by-patient', authPatient, campaignsByPatient); 
+campaignRouter.get('/by-patient/:id', campaignsByPatientId);          
 
 
 export default campaignRouter;

@@ -1,4 +1,3 @@
-
 import express from 'express';
 import { getPatientById, isAuth, login, logout, patientList, register } from '../controllers/patientController.js';
 import authPatient from '../middlewares/authPatient.js';
