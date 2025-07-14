@@ -35,6 +35,8 @@ import MyRequest from './pages/patient/MyRequest.Jsx'
 import DonationHistory from './pages/admin/DonationHistory'
 import CampaignDonations from './pages/patient/CampaignDonations'
 import PatientDetail from './pages/admin/PatientDetail'
+import About from './pages/About'
+import Contact from './pages/Contact'
 
 const App = () => {
 
@@ -53,6 +55,8 @@ const App = () => {
       <div className={`${(isPatientPath || isAdminPath) ? "" : "px-6 md:px-16 lg:px-24 xl:px-32"}`}>
         <Routes>
           <Route path='/' element={<Home/>} />
+          <Route path='/about' element={<About/>} />
+          <Route path='/contact' element={<Contact/>} />
           <Route path='/donate' element={<AllCampaign/>} />
           <Route path='/donate/:category' element={<CampaignCategory/>} />
           <Route path='/donate/:category/:id' element={<CampaignDetails/>} />

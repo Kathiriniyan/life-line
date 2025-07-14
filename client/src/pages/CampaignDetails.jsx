@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { useAppContext } from "../context/AppContext";
 import { Link, useParams } from "react-router-dom";
 import CampaignCards from "../components/CampaignCards";
-
+import { useClerk, useUser } from '@clerk/clerk-react';
+import toast from "react-hot-toast";
 
 function getDaysLeft(endDate) {
   const now = new Date();
@@ -12,6 +13,8 @@ function getDaysLeft(endDate) {
 }
 
 const CampaignDetails = () => {
+  const { openSignIn } = useClerk();
+  const { isSignedIn } = useUser();
   const { campaigns, navigate, axios, currency = "LKR" } = useAppContext();
   const { id } = useParams();
   const [relatedCampaigns, setRelatedCampaigns] = useState([]);
@@ -126,7 +129,17 @@ const CampaignDetails = () => {
           </ul>
 
           <div className="flex items-center mt-10 gap-4 text-base">
-            <button onClick={() => { navigate(`donate/pay/${campaign._id}`) }} className="w-full py-3.5 cursor-pointer font-medium bg-primary text-white rounded-xl shadow-xl hover:bg-primary-dull transition" >
+            <button
+              onClick={() => {
+                if (!isSignedIn) {
+                  toast.error("Please log in as a donor to continue");
+                  openSignIn();
+                  return;
+                }
+                navigate(`donate/pay/${campaign._id}`);
+              }}
+              className="w-full py-3.5 cursor-pointer font-medium bg-primary text-white rounded-xl shadow-xl hover:bg-primary-dull transition"
+            >
               Donate Now
             </button>
           </div>
@@ -141,10 +154,6 @@ const CampaignDetails = () => {
           ))}
         </ul>
       </div>
-
-
-
-
 
       {/* ---------- Supporters/Donors Section ------------- */}
       {donations.length > 0 && (
@@ -180,7 +189,6 @@ const CampaignDetails = () => {
                     </span>
                   </span>
                   <span className="mt-2 text-gray-700 italic break-words">
-                    {/* Only show if a message exists */}
                     {donation.message
                       ? `"${donation.message}"`
                       : <span className="text-gray-400">No message</span>}
@@ -191,15 +199,6 @@ const CampaignDetails = () => {
           </div>
         </div>
       )}
-
-
-
-
-
-
-
-
-
 
       {/* --------------- Related Campaign------------------ */}
       <div className=" flex flex-col items-center mt-20">

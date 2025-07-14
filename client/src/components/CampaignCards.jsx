@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useAppContext } from '../context/AppContext';
+import { useUser } from '@clerk/clerk-react';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const SHARE_OPTIONS = [
   {
@@ -52,13 +55,29 @@ const CampaignCards = ({ campaign }) => {
   const [showShare, setShowShare] = useState(false);
   const [isFav, setIsFav] = useState(false);
   const { navigate } = useAppContext();
+  const { user, isSignedIn } = useUser();
 
-  
   const campaignProgress = campaign.goalAmount && campaign.collectedAmount
     ? Math.min(campaign.collectedAmount / campaign.goalAmount, 1)
     : 0;
 
+  // Check if favourited (on mount)
+  useEffect(() => {
+    const fetchFav = async () => {
+      if (isSignedIn && user?.id) {
+        try {
+          const { data } = await axios.get(`/api/favourite/check/single?donorId=${user.id}&campaign=${campaign._id}`);
+          setIsFav(data.isFavourite);
+        } catch {
+          setIsFav(false);
+        }
+      }
+    };
+    fetchFav();
+    // eslint-disable-next-line
+  }, [isSignedIn, user, campaign._id]);
 
+  // Animate progress bar
   useEffect(() => {
     let anim;
     if (progress < campaignProgress) {
@@ -70,10 +89,39 @@ const CampaignCards = ({ campaign }) => {
     return () => clearTimeout(anim);
   }, [progress, campaignProgress]);
 
-
   const daysLeft = getDaysLeft(campaign.endDate);
 
   if (!campaign.isApprove) return null;
+
+  // Favourite/Unfavourite Handler
+  const handleFavourite = async (e) => {
+    e.stopPropagation();
+    if (!isSignedIn || !user?.id) {
+      toast.error("Please log in as a donor to favourite campaigns.");
+      return;
+    }
+    try {
+      if (!isFav) {
+        const { data } = await axios.post('/api/favourite/add', { donorId: user.id, campaign: campaign._id });
+        if (data.success) {
+          setIsFav(true);
+          toast.success("Added to favourites");
+        } else {
+          toast.error(data.message || "Already favourited.");
+        }
+      } else {
+        const { data } = await axios.post('/api/favourite/remove', { donorId: user.id, campaign: campaign._id });
+        if (data.success) {
+          setIsFav(false);
+          toast.success("Removed from favourites");
+        } else {
+          toast.error(data.message || "Could not remove favourite.");
+        }
+      }
+    } catch (err) {
+      toast.error("An error occurred. Try again.");
+    }
+  };
 
   return (
     <div
@@ -83,7 +131,6 @@ const CampaignCards = ({ campaign }) => {
         scrollTo(0, 0);
       }}
     >
-      
       <div className="flex justify-between items-center mb-2">
         <div className="flex items-center gap-1">
           {campaign.isEmergency && (
@@ -104,12 +151,10 @@ const CampaignCards = ({ campaign }) => {
           onMouseLeave={e => { e.stopPropagation(); setShowShare(false); }}
           onClick={e => e.stopPropagation()}
         >
+          {/* FAVOURITE BUTTON */}
           <button
             className="hover:text-red-500"
-            onClick={e => {
-              e.stopPropagation();
-              setIsFav(f => !f);
-            }}
+            onClick={handleFavourite}
             aria-label="Favorite"
           >
             {isFav ? (
@@ -118,7 +163,7 @@ const CampaignCards = ({ campaign }) => {
               <svg width="20" height="20" fill="none" stroke="#e11d48" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 1.01 4.5 2.09C13.09 4.01 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" /></svg>
             )}
           </button>
-          
+          {/* SHARE BUTTONS */}
           <div onClick={e => e.stopPropagation()}>
             <button className="hover:text-blue-500" aria-label="Share">
               <svg width="20" height="20" fill="none" stroke="#3b82f6" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3" fill="#3b82f6" /><circle cx="6" cy="12" r="3" fill="#a7f3d0" /><circle cx="18" cy="19" r="3" fill="#fde68a" /><path d="M8.59 13.51l6.83 3.98M15.41 6.51L8.59 10.49" stroke="#333" strokeWidth="1.5" strokeLinecap="round" /></svg>
@@ -145,7 +190,6 @@ const CampaignCards = ({ campaign }) => {
         </div>
       </div>
 
-      
       <div className="group-hover:scale-106 transition flex justify-center items-center bg-gray-100 rounded-md h-36 mb-3">
         {campaign.image && campaign.image[0] ? (
           <img src={campaign.image[0]} alt="" className="object-cover w-full h-full rounded-md" />
@@ -154,12 +198,10 @@ const CampaignCards = ({ campaign }) => {
         )}
       </div>
 
-      
       <h2 className="font-semibold text-primary text-base mb-1 line-clamp-2">{campaign.title}</h2>
       <p className="text-xs font-semibold text-indigo-600 mb-1 capitalize">{campaign.category}</p>
       <p className="text-xs text-gray-600 mb-2 line-clamp-2">{campaign.description[0]}</p>
 
-      
       <div className="flex justify-between">
         <div className="mb-2">
           <span className="text-xs font-medium">Goal : </span>
@@ -170,16 +212,13 @@ const CampaignCards = ({ campaign }) => {
             <path d="M12 21s-6-5.686-6-10A6 6 0 1 1 18 11c0 4.314-6 10-6 10zm0-8a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" fill="#64748b" />
           </svg>
           <span className="font-bold text-sm text-gray-800">
-            
             {campaign.address && typeof campaign.address === 'object'
               ? campaign.address.city
               : 'Location'}
           </span>
         </div>
-
       </div>
 
-      
       <div className="flex items-center gap-2 mb-2">
         <div className="bg-gray-200 w-full h-2 rounded-full overflow-hidden">
           <div className="bg-red-500 h-2 rounded-full transition-all duration-700" style={{ width: `${progress * 100}%` }}></div>
@@ -187,7 +226,6 @@ const CampaignCards = ({ campaign }) => {
         <span className="text-xs font-semibold text-gray-600">{Math.round(progress * 100)}%</span>
       </div>
 
-      
       <div className="flex justify-between items-center mb-3 text-xs text-gray-500">
         <div className="flex items-center gap-1">
           <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="#64748b" /></svg>
@@ -199,7 +237,6 @@ const CampaignCards = ({ campaign }) => {
         </div>
       </div>
 
-      
       <div className="flex gap-2">
         <button
           onClick={e => {

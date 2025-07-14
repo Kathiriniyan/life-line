@@ -54,6 +54,11 @@ import overview from "./overview.png";
 import request from "./request.png";
 import user from "./user.png";
 import favourite_icon from "./favourite_icon.svg";
+import start_campaign from "./start_campaign.svg";
+import share_with_world from "./share_with_world.svg";
+import track_donation from "./track_donation.svg";
+import withdraw_funds from "./withdraw_funds.svg";
+import heart_donation from "./heart-donation.json";
 
 
 export const assets = {
@@ -106,6 +111,11 @@ export const assets = {
   request,
   user,
   favourite_icon,
+  start_campaign,
+  share_with_world,
+  track_donation,
+  withdraw_funds,
+  heart_donation,
 };
 
 export const categories = [
@@ -210,6 +220,26 @@ export const features = [
     icon: trust_icon,
     title: "Verified Fund Transfer",
     description: "Loved by 10,000+ happy customers.",
+  },
+];
+
+export const aboutIcons = [
+  {
+    icon: start_campaign,
+    title: "Start a Campaign",
+  },
+
+  {
+    icon: share_with_world,
+    title: "Share with the World",
+  },
+  {
+    icon: track_donation,
+    title: "Track Donations",
+  },
+  {
+    icon: withdraw_funds,
+    title: "Withdraw Funds",
   },
 ];
 
