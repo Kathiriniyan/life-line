@@ -2,36 +2,54 @@ import stripe from "stripe";
 import { v4 as uuidv4 } from 'uuid';
 import Campaign from "../models/Campaign.js";
 import Donation from "../models/Donation.js";
+import Donor from '../models/Donor.js'; // Adjust the path as necessary
+import { sendDonationReceipt } from "../utils/mailer.js";
 
 
-// Add Donation
 export const createDonation = async (req, res) => {
-    try {
-        const { campaignId, donorId, amount, message, isAnonymous } = req.body;
+  try {
+    const { campaignId, donorId, amount, message, isAnonymous } = req.body;
 
-        // Validate campaign exists & is approved
-        const campaign = await Campaign.findById(campaignId);
-        if (!campaign) return res.json({ success: false, message: "Campaign not found" });
-        if (!campaign.isApprove) return res.json({ success: false, message: "Campaign is private" });
+    // (Your validation and donation creation code)
+    const campaign = await Campaign.findById(campaignId);
+    if (!campaign) return res.json({ success: false, message: "Campaign not found" });
+    if (!campaign.isApprove) return res.json({ success: false, message: "Campaign is private" });
+    if (!donorId) return res.json({ success: false, message: "Login required" });
+    if (amount < 100) return res.json({ success: false, message: "Minimum amount is 100" });
 
-        if (!donorId) return res.json({ success: false, message: "Login required" });
-        if (amount < 100) return res.json({ success: false, message: "Minimum amount is 100" });
+    const donation = await Donation.create({
+      donorId, campaign: campaignId, amount, message, isAnonymous,
+    });
 
-        // Save donation
-        const donation = await Donation.create({
-            donorId, campaign: campaignId, amount, message, isAnonymous,
-        });
+    campaign.collectedAmount += amount;
+    await campaign.save();
 
-        // Update collected amount
-        campaign.collectedAmount += amount;
-        await campaign.save();
-
-        res.json({ success: true, message: "Donation Successful", donation });
-    } catch (error) {
-        console.log(error.message);
-        res.json({ success: false, message: error.message });
+    // --------- MAIL LOGIC HERE ---------
+    // Only send if NOT anonymous, and donor exists
+    if (!isAnonymous && donorId) {
+      const donor = await Donor.findOne({ donorId }) || await Donor.findById(donorId);
+      if (donor && donor.email) {
+        try {
+          await sendDonationReceipt({
+            to: donor.email,
+            name: donor.name,
+            amount,
+            campaignTitle: campaign.title
+          });
+        } catch (mailError) {
+          console.log('Email failed:', mailError);
+        }
+      }
     }
+    // --------- END MAIL LOGIC ----------
+
+    res.json({ success: true, message: "Donation Successful", donation });
+  } catch (error) {
+    console.log(error.message);
+    res.json({ success: false, message: error.message });
+  }
 };
+
 
 // List all donations (for admin)
 export const allDonations = async (req, res) => {
