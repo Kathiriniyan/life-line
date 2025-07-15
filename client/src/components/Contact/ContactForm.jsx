@@ -1,16 +1,39 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import toast from 'react-hot-toast';
 import { AiOutlineSend } from 'react-icons/ai';
 
 const ContactForm = () => {
-  const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
+  const [loading, setLoading] = useState(false);
 
-  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = e => {
+    setFormData(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }));
+  };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    toast.success('Your message has been sent!');
-    setFormData({ name: '', email: '', subject: '', message: '' });
+    setLoading(true);
+    try {
+      const { data } = await axios.post('/api/contact-request/submit', formData);
+      if (data.success) {
+        toast.success('Your message has been sent!');
+        setFormData({ name: '', email: '', subject: '', message: '' });
+      } else {
+        toast.error(data.message || 'Submission failed');
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || error.message || 'Submission failed');
+    }
+    setLoading(false);
   };
 
   return (
@@ -74,10 +97,11 @@ const ContactForm = () => {
       <div className="text-center">
         <button
           type="submit"
+          disabled={loading}
           className="flex items-center justify-center gap-2 bg-[var(--color-button)] hover:bg-[var(--color-button-dull)] text-white font-semibold py-3 px-8 rounded-full shadow-md transition-all duration-300 hover:scale-105"
         >
           <AiOutlineSend className="text-lg" />
-          Send Message
+          {loading ? 'Sending...' : 'Send Message'}
         </button>
       </div>
     </form>
@@ -85,3 +109,4 @@ const ContactForm = () => {
 };
 
 export default ContactForm;
+

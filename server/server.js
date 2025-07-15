@@ -18,6 +18,7 @@ import adminStatsRouter from './routes/adminStatsRouter.js';
 import DonationRequestRouter from './routes/DonationRequestRouter.js';
 import sendedAmountRouter from './routes/sendedAmountRouter.js';
 import favouriteRoute from './routes/favouriteRoute.js';
+import contactRequestRoute from './routes/contactRequestRoute.js';
 
 
 
@@ -40,6 +41,7 @@ app.use(clerkMiddleware())
 
 app.get('/',(req, res) => res.send("API is Working"));
 app.use('/api/inngest', serve({ client: inngest, functions }))
+app.use('/api/contact-request', contactRequestRoute);
 app.use('/api/favourite', favouriteRoute);
 app.use('/api/patient', patientRouter)
 app.use('/api/address', addressRouter)
