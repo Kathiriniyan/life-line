@@ -155,6 +155,39 @@ const CampaignDetails = () => {
         </ul>
       </div>
 
+      {/* ---- Patient Address & Bank Details Section ---- */}
+      <div className="mt-10 flex flex-col md:flex-row gap-12">
+        {/* Address */}
+        <div className="flex-1 border rounded-lg p-6 bg-gray-50">
+          <div className="text-xl font-bold mb-3">Patient Address</div>
+          {campaign.address ? (
+            <ul className="text-gray-700 space-y-1">
+              <li><span className="font-semibold">Street:</span> {campaign.address.street}</li>
+              <li><span className="font-semibold">City:</span> {campaign.address.city}</li>
+              <li><span className="font-semibold">Province:</span> {campaign.address.province}</li>
+              <li><span className="font-semibold">Phone:</span> {campaign.address.phone}</li>
+            </ul>
+          ) : (
+            <div className="text-gray-400">No address details</div>
+          )}
+        </div>
+        {/* Bank Account */}
+        <div className="flex-1 border rounded-lg p-6 bg-gray-50">
+          <div className="text-xl font-bold mb-3">Bank Details</div>
+          {campaign.account ? (
+            <ul className="text-gray-700 space-y-1">
+              <li><span className="font-semibold">Account Holder:</span> {campaign.account.fullName}</li>
+              <li><span className="font-semibold">Bank:</span> {campaign.account.bankName}</li>
+              <li><span className="font-semibold">Account Number:</span> {campaign.account.accNumber}</li>
+              <li><span className="font-semibold">Branch:</span> {campaign.account.branch}</li>
+            </ul>
+          ) : (
+            <div className="text-gray-400">No account details</div>
+          )}
+        </div>
+      </div>
+      {/* ---- End Patient Address & Bank Details ---- */}
+
       {/* ---------- Supporters/Donors Section ------------- */}
       {donations.length > 0 && (
         <div className="flex flex-col items-center mt-16 w-full">

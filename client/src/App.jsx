@@ -24,7 +24,6 @@ import Add_Address from './pages/patient/Add_Address'
 import AddBankAccount from './pages/patient/AddBankAccount'
 import Favorite from './pages/Favorite'
 import Over_view from './pages/patient/Over_view'
-import CampaignRequest from './pages/admin/CampaignRequest'
 import PatientRequest from './pages/admin/PatientRequest'
 import CampaignHistory from './pages/admin/CampaignHistory'
 import PatientList from './pages/admin/PatientList'
@@ -37,6 +36,7 @@ import CampaignDonations from './pages/patient/CampaignDonations'
 import PatientDetail from './pages/admin/PatientDetail'
 import About from './pages/About'
 import Contact from './pages/Contact'
+import UserRequest from './pages/admin/UserRequest'
 
 const App = () => {
 
@@ -77,7 +77,7 @@ const App = () => {
             <Route path='campaign-list' element={<Campaign_List/>}/>
             <Route path='campaign-list/:id' element={<Campaign_DetailPage/>}/>
             <Route path='campaign-history' element={<CampaignHistory/>}/>
-            <Route path='campaign-approve' element={<CampaignRequest/>}/>
+            <Route path='user-request' element={<UserRequest/>}/>
             <Route path='patient-request' element={<PatientRequest/>}/>
             <Route path='patient-details' element={<PatientList/>}/>
             <Route path='patient-details/:id' element={<PatientDetail/>}/>

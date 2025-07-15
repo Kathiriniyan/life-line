@@ -124,12 +124,7 @@ const DonationHistory = () => {
                 )}
               </div>
               <div className="flex gap-2 mt-4">
-                <button
-                  onClick={() => handleCredit(selectedCampaign)}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded"
-                >
-                  Amount Sent (Mark as Credited)
-                </button>
+                
                 <button
                   onClick={() => setSelectedCampaign(null)}
                   className="border px-5 py-2 rounded"
@@ -214,7 +209,6 @@ const DonationHistory = () => {
               <th className="p-2">Goal</th>
               <th className="p-2">Collected</th>
               <th className="p-2">Outstanding</th>
-              <th className="p-2">Will be Credited</th>
               <th className="p-2">Status</th>
             </tr>
           </thead>
@@ -250,9 +244,7 @@ const DonationHistory = () => {
                 <td className="p-2 font-bold text-blue-700">
                   LKR {getOutstanding(c).toLocaleString()}
                 </td>
-                <td className="p-2 text-orange-600">
-                  LKR {getAmountWillBeCredited(c).toLocaleString()}
-                </td>
+                
                 <td className="p-2">
                   {isCampaignClosed(c.endDate) ? (
                     <span className="bg-red-100 px-2 py-1 rounded text-xs text-red-600">

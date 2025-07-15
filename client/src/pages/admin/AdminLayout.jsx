@@ -24,7 +24,7 @@ const AdminLayout = () => {
       name: "Request",
       icon: assets.request,
       children: [
-        { name: "Campaign Request", path: "/admin/campaign-approve" },
+        { name: "User Request", path: "/admin/user-request" },
         { name: "Patient Request", path: "/admin/patient-request" }
       ]
     },
