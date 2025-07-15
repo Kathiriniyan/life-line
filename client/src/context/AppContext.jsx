@@ -13,15 +13,15 @@ export const AppContextProvider = ({ children }) => {
 
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
-    const [patient, setPatient] = useState(null); // current user
-    const [patients, setPatients] = useState([]); // all patients
+    const [patient, setPatient] = useState(null); 
+    const [patients, setPatients] = useState([]); 
     const [isPatient, setIsPatient] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
     const [showUserLogin, setShowUserLogin] = useState(false);
     const [showPatientLogin, setShowPatientLogin] = useState(false);
     const [campaigns, setCampaigns] = useState([]);
     const [cartItems, setCartItems] = useState({});
-    const [searchQuery, setSearchQuery] = useState(""); // as a string
+    const [searchQuery, setSearchQuery] = useState(""); 
     const [favouriteCampaigns, setFavouriteCampaigns] = useState({});
     const [donors, setDonors] = useState([]);
 
