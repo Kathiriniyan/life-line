@@ -76,12 +76,12 @@ export const dashboardStats = async (req, res) => {
     // Recent Activities: last 10 donations/campaigns (for demo; customize as needed)
     const recentDonations = await Donation.find({})
       .sort({ createdAt: -1 })
-      .limit(5)
+      .limit(50)
       .populate('donorId', 'name')
       .populate('campaign', 'title');
     const recentCampaigns = await Campaign.find({})
       .sort({ createdAt: -1 })
-      .limit(5)
+      .limit(50)
       .populate('patientId', 'name');
 
     // Merge and sort by date for activities

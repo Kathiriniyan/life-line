@@ -9,6 +9,20 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+export const sendOTPEmail = async ({ to, otp }) => {
+  return transporter.sendMail({
+    from: `"LifeLine" <${process.env.GMAIL_USER}>`,
+    to,
+    subject: "Your LifeLine OTP Verification Code",
+    html: `
+      <h2>Email Verification</h2>
+      <p>Your OTP code is: <b>${otp}</b></p>
+      <p>This code will expire in 10 minutes.</p>
+    `,
+  });
+};
+
+
 export const sendDonationReceipt = async ({ to, name, amount, campaignTitle }) => {
   return transporter.sendMail({
     from: `"LifeLine" <${process.env.GMAIL_USER}>`,
